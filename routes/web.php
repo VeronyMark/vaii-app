@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PostController;
+
 
 use App\Models\Post;
 use App\Models\Category;
@@ -26,6 +28,23 @@ Route::get('/', function () {
     'posts' => Post::latest()->with('category','author') ->get()
     ]);
 });
+
+
+Route::get('posts/{post:slug}', function (Post $post) {
+    return view('post', ['post' => $post]);
+});
+
+
+
+Route::get('/create', PostController::class . '@create')->name('create');
+// adds a post to the database
+
+// returns the form for adding a post
+
+// adds a post to the database
+Route::post('/posts', PostController::class .'@store')->name('posts.store');
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

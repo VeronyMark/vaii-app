@@ -21,18 +21,37 @@
     </head>
 
 
-    <body class="antialiased">
-        <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    <body>
+        <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen  bg-center  selection:bg-blue selection:text-white">
             @if (Route::has('login'))
                 <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                     @auth
+                        <!--  PRIHLASENY       -->
                         <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
+                        <!--to do over -->
+                        <span class=" text-center fw-bold text-uppercase ms-3 me-2" style="color: #757575;">Vitaj, {{auth()->user()->name}} !</span>
+
+
                     @else
+
+                        <button type="submit" class="btn btn-dark">PRIDAJ BLOG</button>
+
+                        <a class="btn btn-light hover:bg-blue-500" href="{{ route('create') }}">Add Post</a>
+
+
+                       <!-- <form method="POST" action="{ route('posts.create')}}">
+                            <button type="button" class="btn btn-light hover:bg-blue-500">PRIDAJ BLOG</button>
+                        </form>
+-->
                         <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
+
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
                         @endif
+
+
+
                     @endauth
                 </div>
             @endif
@@ -67,7 +86,72 @@
                     </div>
                 </div>
 
+<!-- -->
 
+                <div class="row g-5">
+
+                        <div class="col-md-8">
+                            <h3 class="pb-4 mb-4 fst-italic border-bottom">
+                                NÁŠ NAJNOVŠÍ BLOG </h3>
+                            <!--UKAZKY CLANKOV -->
+
+                            <div class="container">
+                                <!-- <div class="row row-cols-1 row-cols-md-2 g-6 g-lg-8"> -->
+
+
+                                <!-- Content for each grid item goes here -->
+                                @if ($posts->count()>1)
+                                    <div class="row mb-2">
+                                        <!-- <div class="row mb-2"> -->
+                                        @foreach($posts->skip(1) as $postik)
+                                            <x-blog-ukazka :post="$postik"/>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-center">Zatiaľ nebol pridaný žiaden post</p>
+                                @endif
+
+                            </div>
+
+                            <!-- KONIEC UKAZKOV CLANKOV-->
+                        </div>
+
+                    <!--bocne panely -->
+                    <div class="col-md-4">
+                        <div class="position-sticky" style="top:10rem;">
+
+                            <div class="p-4 mb-3 bg-light rounded-top">
+                                <h4>O nás</h4>
+                                <p class="mb-0"> Vitajte na našom blogu, kde objavujeme fascinujúci svet remesiel, inšpirácie z
+                                    minulosti a užitočné triky pre všetkých remeselníkov. Ak ste zvedaví na tradičné zručnosti,
+                                    ktoré prežili stáročia a tvoria našu kultúrnu dedičinu, tak ste na správnom mieste. Naše
+                                    blogy
+                                    vám poskytnú zaujímavý pohľad na rôzne remeselné techniky a prinesú vám inšpiráciu, aby ste
+                                    aj
+                                    vy mohli objaviť svoju kreativitu. Nielenže sa zameriame na zručnosti a tipy pre
+                                    začiatočníkov,
+                                    ale tiež sa pohráme s históriou, aby sme vám priblížili, ako sa remeslá vyvíjali v priebehu
+                                    času. Spolu objavíme krásu tradičných remesiel a vytvoríme prepojenie medzi minulosťou a
+                                    súčasnosťou. Poďte s nami na cestu do sveta remeselníkov a ich dovedností.</p>
+                            </div>
+
+                            <div class="p-4">
+                                <h4>Archív</h4>
+                                <ol class="list-unstyled mb-0">
+                                    <li><a href="#">Hrnčiarstvo</a></li>
+                                    <li><a href="#">Modrotlač</a></li>
+                                    <li><a href="#">Umelecké šperkárstvo</a></li>
+                                    <li><a href="#">Včelárstvo</a></li>
+                                    <li><a href="#">Výstavné rezbárstvo</a></li>
+
+
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+<!--NOve -->
 
                 <div class="container">
                    <!-- <div class="row row-cols-1 row-cols-md-2 g-6 g-lg-8"> -->
