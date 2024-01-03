@@ -22,7 +22,7 @@ use App\Models\User;
 */
 
 
-
+//HOMEPAGE
 Route::get('/', function () {
     return view('welcome', [
     'posts' => Post::latest()->with('category','author') ->get()
@@ -35,14 +35,19 @@ Route::get('posts/{post:slug}', function (Post $post) {
 });
 
 
-
+//POSTY
 Route::get('/create', PostController::class . '@create')->name('create');
-// adds a post to the database
+Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('edit');
+Route::put('/posts/{post}', PostController::class .'@update')->name('update');
 
-// returns the form for adding a post
+//Route::delete('/posts/{post}', PostController::class .'@destroy')->name('posts.destroy');
 
-// adds a post to the database
-Route::post('/posts', PostController::class .'@store')->name('posts.store');
+//KOMENTÁRE
+Route::post('posts/{post:slug}/comments', [PostCommentsController::class, 'store']);
+Route::get('posts/{comment}/edit', [PostCommentsController::class, 'edit'])->name('comments.edit');
+Route::put('posts/{comment}/update', [PostCommentsController::class, 'update'])->name('comments.update');
+Route::delete('posts/{comment}/destroy', [PostCommentsController::class, 'destroy'])->name('comments.delete');
+
 
 
 

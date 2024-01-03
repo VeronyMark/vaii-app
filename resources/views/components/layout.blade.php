@@ -16,6 +16,13 @@
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-min.js" defer></script>
 
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -54,7 +61,6 @@
                         </ul>
                         <span class=" text-center fw-bold text-uppercase ms-3 me-2" style="color: #757575;">Vitaj, {{auth()->user()->name}} !</span>
 
-
                         <form method="POST" action="/logout" class=" fw-bold  ">
                             @csrf
                             <button type="submit" class="btn btn-danger">Odlásenie</button>
@@ -69,86 +75,9 @@
     </header>
 </div>
 
-<main class="container mt-6 ">
 
+{{$slot}}
 
-    <article>
-
-        <h2> {{$post->title}}</h2>
-
-        <p style="color:grey ">{{$post->created_at->diffForHumans()}} <a href="#">{{$post->author->name}} </a></p>
-
-        <p style="color:grey "><a href="/categories/{{$post->category->slug}}">{{$post->category->name}} </a></p>
-
-        <!-- <p> <a href="/"></a> Spať na hlavnú stránku</p> -->
-
-        <p><strong>
-                {{$post->excerpt}}
-            </strong></p>
-
-        <hr>
-
-        <p>
-            {{$post->body}}
-        </p>
-
-        <a class="btn btn-light hover:bg-blue-500" href="{{ route('edit', $post->id) }}">EDIT</a>
-
-        <section class="col-md-8 offset-md-2 mt-4 mb-4">
-            <form method="POST" action="/posts/{{ $post->slug}}/comments" class="bg-light border rounded p-4">
-
-
-                <!--<form method="POST" action="#" > -->
-                <header class="d-flex align-items-center">
-                    @guest
-                        <img  src="https://i.pravatar.cc/60" alt="" width="40" height="40" class="rounded-circle mr-2">
-                    @else
-                        <img src="https://i.pravatar.cc/60?u={{ auth()->user()->id }}" alt="" width="40" height="40" class="rounded-circle mr-2">
-                    @endguest
-                    <h2 class="ml-2">Chceš zanechať komentár?</h2>
-                </header>
-
-                <div class="mt-3">
-                    <textarea name="body" class="form-control" placeholder="Napíš nám svoj názor"></textarea>
-                </div>
-
-                <div class="justify-end mt-3 border-t ">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">ZDIEĽAJ</button>
-                </div>
-            </form>
-            dd($post->comments);
-            @foreach ($post->comments as $comment)
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <x-comment :comment="$comment"/>
-                    </div>
-                </div>
-            @endforeach
-        </section>
-
-    </article>
-
-
-</main>
-
-
-<!-- NEWSLETTERS-->
-<footer>
-    <div style="background-image: url('{{ asset('../../Images/vcelarstco.jpg') }}'); background-size: cover;">
-        <div class="row justify-content-center">
-            <div class="col-8 p-md-5 mb-5 mt-5  text-black rounded  bg-white">
-                <h1 class="display-4 fst-italic  ">NEWSLETTER</h1>
-
-                <p class="lead my-3 fst-italic" style="font-size: 24px; "> Prihláste sa do nášho newslettra a buďte v
-                    obraze!</p>
-
-                <input type="email" name="email" placeholder="  zadaj svoj e-mail" required>
-                <button type="button" class="btn btn-dark">ODOŠLI</button>
-            </div>
-        </div>
-    </div>
-</footer>
 
 
 </body>

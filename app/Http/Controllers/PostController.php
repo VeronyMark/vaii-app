@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -57,6 +59,16 @@ class PostController extends Controller
         return view('create');
     }
 
+    public function edit($id)
+    {
+        $post = Post::find($id);
 
+        return view('edit', compact('post'));
+    }
 
 }
+
+
+
+
+
