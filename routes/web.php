@@ -35,6 +35,21 @@ Route::get('posts/{post:slug}', function (Post $post) {
 });
 
 
+
+Route::get('/ikeaa', function () {
+    return view('ikea');
+});
+
+Route::get('/sk', function () {
+    return view('skuska');
+});
+
+Route::get('/s', function () {
+    return view('s');
+});
+
+
+
 //POSTY
 Route::get('/create', PostController::class . '@create')->name('create');
 Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('edit');
