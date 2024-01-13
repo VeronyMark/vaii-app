@@ -14,8 +14,8 @@
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-min.js" defer></script>
-
+   <!-- <script src="{{ asset('js/fotkoAdd.js') }}"></script>
+-->
 </head>
 
 <body>
@@ -74,21 +74,29 @@
         <div class="container h-100 mt-5">
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-10 col-md-8 col-lg-6">
-                    <h3>PRIDAJ ČLÁNOK</h3>
-                    <form action="{{ route('posts.store') }}" method="post">
-                        @csrf
+                    <h3> <bold>PRIDAJ ČLÁNOK </bold></h3>
 
-                        <div class="form-group">
+                    <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
+    @csrf
+
+                        <div class="form-group mt-4">
                             <label for="title">NÁDPIS</label>
                             <input type="text" class="form-control" id="title" name="title" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mt-4">
                             <label for="body">ČLÁNOK</label>
-                            <textarea class="form-control" id="body" name="body" rows="3" required></textarea>
+                            <textarea class="form-control" id="body" name="body" rows="40" required></textarea>
                         </div>
-                        <br>
+
+                    <div class="form-group mt-4">
+                        <!--<input type="file" name="file_upload"> -->
+                        <input type="file" name="images[]" multiple>
+                    </div>
+
+   <!--                     <a class="btn btn-light hover:bg-blue-500 mt-4" href="{{ route('create') }}">UVEREJNIŤ</a>
+-->
                         <button type="submit" class="btn btn-primary">PRIDAJ ČLÁNOK </button>
-                        <a class="btn btn-light hover:bg-blue-500" href="{{ route('create') }}">Add Post</a>
+                      <!--  <a class="btn btn-light hover:bg-blue-500 mt-4" href="{ route('create') }}">UVEREJNIŤ</a> -->
 
                     </form>
                 </div>
@@ -98,3 +106,9 @@
 </main>
 </body>
 </html>
+
+
+
+
+    <!-- Include other form fields -->
+

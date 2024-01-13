@@ -33,5 +33,9 @@ class Post extends Model
         return $this->belongsTo(User::class,'user_id');       //foreign key nie je author_id ale user_id
     }
 
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
 
 }

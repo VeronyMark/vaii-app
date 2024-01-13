@@ -10,7 +10,9 @@ use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\UploadedFile;
+use App\Models\Image;
 
 class PostController extends Controller
 {
@@ -37,13 +39,46 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'body' => 'required',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Allow multiple images
+            'category' => 'required'
         ]);
 
-        Post::create($request->all());
+        $postData = [
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
+            'user_id' => request()->user()->id,
+            'category_id' => $request->input('category')
+            // Add other fields as needed
+        ];
+
+        // Create the post
+        $post = Post::create($postData);
+
+        //Post::create($request->all());
+        // Handle image uploads
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $filename = $image->store('images'); // Customize the storage path as needed
+
+                // Create the associated image record
+                Image::create([
+                    'post_id' => $post->id,
+                    'filename' => $filename,
+                    'original_name' => $image->getClientOriginalName(),
+                    'file_path' => $filename, // Customize the storage path as needed
+                ]);
+            }
+        }
+
 
         return redirect()->route('/')
-            ->with('success', 'Post created successfully.');
+            ->with('success', "Post bol úspešne zverejnený ");
+
     }
+
+
+
+
 
 
 

@@ -1,4 +1,5 @@
 <x-layout>
+    <div class="mx-auto" style="max-width: 400px;">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -12,7 +13,7 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Password -->
+        <!-- Heslo -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
@@ -39,9 +40,13 @@
                 </a>
             @endif
 
+
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
+
+
         </div>
     </form>
+    </div>
 </x-layout>

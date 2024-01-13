@@ -50,7 +50,8 @@
                                     <li><a class="dropdown-item" href="/register">Registrácia</a></li>
                                 </ul>
                             </li>
-                            @else
+
+                    @else
                         </ul>
                         <span class=" text-center fw-bold text-uppercase ms-3 me-2" style="color: #757575;">Vitaj, {{auth()->user()->name}} !</span>
 
@@ -117,14 +118,7 @@
                     <button type="submit" class="btn btn-primary">ZDIEĽAJ</button>
                 </div>
             </form>
-            dd($post->comments);
-            @foreach ($post->comments as $comment)
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <x-comment :comment="$comment"/>
-                    </div>
-                </div>
-            @endforeach
+
         </section>
 
     </article>

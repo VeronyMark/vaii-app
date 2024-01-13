@@ -41,7 +41,9 @@ Route::get('/ikeaa', function () {
 });
 
 Route::get('/sk', function () {
-    return view('skuska');
+    return view('skuska', [
+        'posts' => Post::latest()->with('category','author') ->get()
+    ]);
 });
 
 Route::get('/s', function () {
@@ -51,7 +53,14 @@ Route::get('/s', function () {
 
 
 //POSTY
-Route::get('/create', PostController::class . '@create')->name('create');
+// routes/web.php
+
+
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+
+Route::get('/create', [PostController::class, 'create'])->name('create');
+
+//Route::get('/create', PostController::class , 'create')->name('create');
 Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('edit');
 Route::put('/posts/{post}', PostController::class .'@update')->name('update');
 

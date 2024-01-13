@@ -9,13 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('category_id');
-
             $table->string('slug')->unique();
 
             $table->string('title');
@@ -23,16 +23,29 @@ return new class extends Migration
             $table->text('body');
             $table->timestamps();
             $table->timestamp('published_at')->nullable();
+        });
 
-
+        Schema::create('images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('post_id');
+            $table->string('filename');
+            $table->string('original_name');
+            $table->string('file_path');
         });
     }
+
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
+        Schema::dropIfExists('images');
         Schema::dropIfExists('posts');
     }
 };
+
+
+
+

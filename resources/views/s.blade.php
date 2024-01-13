@@ -103,21 +103,33 @@
 
             <!-- Right Side: Scrolling Images -->
             <div class="col-lg-6 scrolling-images">
-                <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
-                <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
-                <!-- Add more images as needed -->
+                 <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
+            <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
+            <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
+            <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
+            <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
+            <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
+            <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
+            <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
+
             </div>
         </div>
     </div>
 
-    <div class="container">
+    <!--  <div class="container">
         <div class="scrolling-images">
             <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
             <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
-            <!-- Add more images as needed -->
+            <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
+            <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
+            <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
+            <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
+            <img src="https://www.ikea.com/global/en/images/PH_191753_cc7af19d73.jpg" alt="Image 1">
+            <img src="https://www.ikea.com/global/en/images/PH_191754_c666d90a39.jpg" alt="Image 2">
+           - Add more images as needed
         </div>
     </div>
-
+    -->
 </main>
 
 <script>
@@ -129,7 +141,7 @@
 
         if (lastImageBottom <= window.innerHeight) {
             fixedText.style.position = 'fixed';
-            fixedText.style.top = '10vh'; /* Adjust the initial position */
+            fixedText.style.top = '0vh'; /* Adjust the initial position */
         } else {
             fixedText.style.position = 'static';
             fixedText.style.top = 'auto';
