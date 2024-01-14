@@ -27,13 +27,16 @@ Route::get('/', function () {
     return view('welcome', [
     'posts' => Post::latest()->with('category','author') ->get()
     ]);
-});
+})->name('welcome');;
 
 
 Route::get('posts/{post:slug}', function (Post $post) {
     return view('post', ['post' => $post]);
 });
 
+Route::get('/d', function () {
+    return view('dropdown');
+});
 
 
 Route::get('/ikeaa', function () {
@@ -53,18 +56,31 @@ Route::get('/s', function () {
 
 
 //POSTY
-// routes/web.php
-
-
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-
+//get view
 Route::get('/create', [PostController::class, 'create'])->name('create');
+Route::post('/store', [PostController::class, 'store'])->name('store');
+Route::delete('posts/{post}/destroy', [PostController::class, 'destroy'])->name('delete');
 
-//Route::get('/create', PostController::class , 'create')->name('create');
+
+//route for creating post
+//Route::get('/create', PostController::class . '@create')->name('create');
+// adds a post to the database
+//Route::post('/posts', PostController::class , 'store')->name('store');
+//Route::post('/create', [PostController::class, 'create'])->name('create');
+//Route::get('/create', [PostController::class, 'create'])->name('create');
+
+//Route::post('/create', [PostController::class, 'store']); // Add this line for the POST request
+
 Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('edit');
 Route::put('/posts/{post}', PostController::class .'@update')->name('update');
 
-//Route::delete('/posts/{post}', PostController::class .'@destroy')->name('posts.destroy');
+
+
+
+
+
+
+
 
 //KOMENTÁRE
 Route::post('posts/{post:slug}/comments', [PostCommentsController::class, 'store']);

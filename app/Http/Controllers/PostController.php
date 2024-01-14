@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\UploadedFile;
 use App\Models\Image;
+use App\Models\Post;
+use Illuminate\Http\Request;
+use App\Models\Category;
+
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+
+
+
 
 class PostController extends Controller
 {
@@ -34,28 +33,64 @@ class PostController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
+
+    //STORE UKLADA DO DATABAZY
     public function store(Request $request)
     {
+        //dd($request->all());
+
         $request->validate([
             'title' => 'required|max:255',
             'body' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Allow multiple images
-            'category' => 'required'
+         //   'images.*' => 'image|mimes:jpeg,png,jpg|max:2048', // Allow multiple images
+            'category_id' => 'required', // Assuming you have a 'categories' table
+            'excerpt' => 'required|max:500',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate the single image
+
         ]);
 
-        $postData = [
-            'title' => $request->input('title'),
-            'body' => $request->input('body'),
-            'user_id' => request()->user()->id,
-            'category_id' => $request->input('category')
-            // Add other fields as needed
-        ];
 
-        // Create the post
-        $post = Post::create($postData);
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+        }
+/*
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+
+        } */
+            // Create a new post in the database
+        Post::create([
+            'user_id' => $request->user()->id, // Assuming you have user authentication
+            'category_id' =>  $request->input('category_id'),
+            'slug' => Str::slug($request->input('title')),
+            'title' => $request->input('title'),
+            'excerpt' => $request->input('excerpt'),
+            'body' => $request->input('body'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'published_at' => Carbon::now(),
+            'image_path' => $imagePath,
+
+        ]);
+
+        return redirect()->route('welcome');
+
+
+
+    }
+
+
+
+
 
         //Post::create($request->all());
-        // Handle image uploads
+        //Post::create($request->all());
+        /* Handle image uploads
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = $image->store('images'); // Customize the storage path as needed
@@ -68,30 +103,22 @@ class PostController extends Controller
                     'file_path' => $filename, // Customize the storage path as needed
                 ]);
             }
-        }
+        }*/
 
-
-        return redirect()->route('/')
-            ->with('success', "Post bol úspešne zverejnený ");
-
-    }
+       // return back();
 
 
 
-
-
-
-
-    // routes functions
 
     /**
      * Show the form for creating a new post.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create( Request $request)
     {
-        return view('create');
+        $categories = Category::all();
+        return view('create', compact('categories'));
     }
 
     public function edit($id)
@@ -101,6 +128,14 @@ class PostController extends Controller
         return view('edit', compact('post'));
     }
 
+    public function destroy(Post $post)
+    {
+
+        $post->delete();
+
+        return redirect()->route('welcome');
+
+    }
 }
 
 

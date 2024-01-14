@@ -21,17 +21,19 @@ return new class extends Migration
             $table->string('title');
             $table->text('excerpt');
             $table->text('body');
+            $table->string('image_path')->nullable(); // or $table->binary('image')->nullable();
+
             $table->timestamps();
             $table->timestamp('published_at')->nullable();
         });
-
+/*
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id');
             $table->string('filename');
             $table->string('original_name');
             $table->string('file_path');
-        });
+        });*/
     }
 
 

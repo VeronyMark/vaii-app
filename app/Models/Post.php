@@ -17,6 +17,16 @@ class Post extends Model
 //daj mi post vzdy aj s tymto
     //  protected $with = ['category','author'];     namiesto with a load
 
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'title',
+        'excerpt',
+        'body',
+        'slug',
+        'image_path',
+
+    ];
 
     public function comments() {
         return $this->hasMany(Comment::class);

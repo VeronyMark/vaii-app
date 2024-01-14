@@ -3,7 +3,9 @@
 
 <div class="col-md-8">
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm"
-         style="height: 250px; background-image: url('{{ asset('Images/modrotlac.jpg') }}'); background-size: cover; position: relative;">
+         style="height: 250px; background-image: url('{{ asset($post->image_path) }}'); background-size: cover; position: relative;">
+
+    <!--style="height: 250px; background-image: url('{ asset('Images/modrotlac.jpg') }}'); background-size: cover; position: relative;"> -->
         <div class="col-md-6 d-flex flex-column  position-static p-4"
              style="background: rgba(255, 255, 255, 0.85);">
             <p style="color:grey ">

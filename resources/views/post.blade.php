@@ -82,6 +82,14 @@
         <p style="color:grey "><a href="/categories/{{$post->category->slug}}">{{$post->category->name}} </a></p>
 
         <!-- <p> <a href="/"></a> Spať na hlavnú stránku</p> -->
+        <form method="post" action="{{ route('delete', ['post' => $post]) }}" class="mt-4">
+            @csrf
+            @method('delete')
+
+            @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $post->user_id)
+                <button type="submit" class="deleteComment btn btn-sm btn-outline-danger">Zmaž</button>
+            @endif
+        </form>
 
         <p><strong>
                 {{$post->excerpt}}

@@ -1,44 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sk">
 <head>
     <meta charset="utf-8">
-    <title>TRM-blog </title>
+    <title>TRM-blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Bootstrap JavaScript, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-   <!-- <script src="{{ asset('js/fotkoAdd.js') }}"></script>
--->
+    <!-- Your additional styles and scripts -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <script src="{ asset('js/fotkoAdd.js') }}"></script> -->
+
+    <script>
+    function selectCategory(selectedCategoryId, selectedCategoryName) {
+        console.log('Selected Category ID:', selectedCategoryId);
+        console.log('Selected Category Name:', selectedCategoryName);
+
+        document.getElementById('selectedCategory').innerText = selectedCategoryName;
+        document.getElementById('selected_category_id').value = selectedCategoryId;
+    }
+</script>
+
+<!--
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var dropdownItems = document.querySelectorAll('.dropdown-menu a');
+
+            dropdownItems.forEach(function (item) {
+                item.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    var selectedCategoryName = item.getAttribute('data-category-name');
+                    var selectedCategoryId = item.getAttribute('data-category-id');
+
+                    console.log('Selected Category ID:', selectedCategoryId);
+                    console.log('Selected Category Name:', selectedCategoryName);
+
+                    document.getElementById('selectedCategory').innerText = selectedCategoryName;
+                    document.getElementById('selected_category_id').value = selectedCategoryId; // Change the ID here
+                });
+            });
+        });
+    </script>    -->
 </head>
+
+
+
 
 <body>
 
-
 <div class="container">
-    <header class="blog-header py-5   ">
-        <div id="headerSubPages">
-            <div class="col-4 "></div>
+    <header class="blog-header py-5">
+        <div id="headerSubPages" class="row">
+            <div class="col-4"></div>
 
             <div class="col-4 text-center">
                 <img src="{{ asset('Images/logo/default-monochrome.svg') }}" alt="Logo" class="img-fluid">
             </div>
 
-            <div class="col-4 d-flex justify-content-center  ">
+            <div class="col-4 d-flex justify-content-center">
                 <nav class="navbar navbar-expand-lg">
                     @guest
                         <ul class="nav justify-content-center">
                             <li class="nav-item">
-                                <a href="/" class="btn btn-dark">Domov
-                                </a>
+                                <a href="/" class="btn btn-dark">Domov</a>
                             </li>
-
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-black" href="#" role="button"
@@ -50,65 +86,81 @@
                                     <li><a class="dropdown-item" href="/register">Registrácia</a></li>
                                 </ul>
                             </li>
-                            @else
                         </ul>
-                        <span class=" text-center fw-bold text-uppercase ms-3 me-2" style="color: #757575;">Vitaj, {{auth()->user()->name}} !</span>
-
-
-                        <form method="POST" action="/logout" class=" fw-bold  ">
+                    @else
+                        <span class="text-center fw-bold text-uppercase ms-3 me-2" style="color: #757575;">Vitaj, {{auth()->user()->name}}!</span>
+                        <form method="POST" action="/logout" class="fw-bold">
                             @csrf
                             <button type="submit" class="btn btn-danger">Odlásenie</button>
                         </form>
-
                     @endguest
-
-
                 </nav>
             </div>
         </div>
     </header>
 </div>
 
-<main class="container mt-6 ">
+<main class="container mt-6">
     <article>
         <div class="container h-100 mt-5">
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-10 col-md-8 col-lg-6">
-                    <h3> <bold>PRIDAJ ČLÁNOK </bold></h3>
+                    <h3><strong>PRIDAJ ČLÁNOK</strong></h3>
 
-                    <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
-    @csrf
+
+                    <form method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group mt-4 row">
+                            <div class="col-md-6">
+                                <label for="title">NÁDPIS</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="category_id" name="category_id">KATEGÓRIA</label>
+                                <!-- Change the input type to text to show the selected category -->
+                                <input type="text" class="form-control" id="selected_category_id" name="category_id" readonly required>
+                                <div class="btn-group dropright">
+                                    <button type="button" class="btn btn-secondary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span id="selectedCategory">Vyber kategóriu</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        @foreach ($categories as $category)
+                                            <a class="dropdown-item" href="#" onclick="selectCategory('{{ $category->id }}', '{{ $category->name }}')">
+                                                {{ $category->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="form-group mt-4">
-                            <label for="title">NÁDPIS</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
+                            <label for="excerpt">UKÁŽKA</label>
+                            <textarea class="form-control" id="excerpt" name="excerpt" rows="4" required></textarea>
                         </div>
+
+
                         <div class="form-group mt-4">
                             <label for="body">ČLÁNOK</label>
                             <textarea class="form-control" id="body" name="body" rows="40" required></textarea>
                         </div>
+                        <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
 
-                    <div class="form-group mt-4">
-                        <!--<input type="file" name="file_upload"> -->
-                        <input type="file" name="images[]" multiple>
-                    </div>
+                        <div class="form-group mt-4">
+                            <label for="image">Obrázok</label>
+                            <input type="file" name="image" class="form-control" accept="image/*" />
 
-   <!--                     <a class="btn btn-light hover:bg-blue-500 mt-4" href="{{ route('create') }}">UVEREJNIŤ</a>
--->
-                        <button type="submit" class="btn btn-primary">PRIDAJ ČLÁNOK </button>
-                      <!--  <a class="btn btn-light hover:bg-blue-500 mt-4" href="{ route('create') }}">UVEREJNIŤ</a> -->
+                        </div>
 
+                        <button type="submit" class="btn btn-primary">PRIDAJ ČLÁNOK</button>
                     </form>
                 </div>
             </div>
         </div>
     </article>
 </main>
+
 </body>
 </html>
-
-
-
-
-    <!-- Include other form fields -->
-

@@ -35,7 +35,12 @@
     @auth
         <span class="text-center font-bold text-uppercase text-gray-600">{{ auth()->user()->name }}, Vitaj!</span>
 
-        <a href="{{ route('create') }}" class="btn btn-light hover:bg-blue-500 ml-4">Add Post</a>
+        <form method="get" action="/create" class="font-bold">
+            @csrf
+            <button type="submit" class="btn btn-danger ml-4">Add Post</button>
+        </form>
+
+           <!-- <a href="{{ route('create') }}" method="post" class="btn btn-light hover:bg-blue-500 ml-4"></a> -->
 
         <form method="POST" action="/logout" class="font-bold">
             @csrf
