@@ -17,10 +17,9 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-min.js" defer></script>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 
 
 </head>
@@ -28,48 +27,60 @@
 <body>
 
 
-<div class="container">
-    <header class="blog-header py-5   ">
+<div>
+    <header class="blog-header py-5 position-sticky ">
         <div id="headerSubPages">
             <div class="col-4 "></div>
 
-            <div class="col-4 text-center">
+            <div class="col-4 text-center ">
                 <img src="{{ asset('Images/logo/default-monochrome.svg') }}" alt="Logo" class="img-fluid">
             </div>
 
+
             <div class="col-4 d-flex justify-content-center  ">
-                <nav class="navbar navbar-expand-lg">
-                    @guest
-                        <ul class="nav justify-content-center">
-                            <li class="nav-item">
-                                <a href="/" class="btn btn-dark">Domov
-                                </a>
-                            </li>
+                @if (Route::has('login'))
+                    <div class="sm:fixed sm:top-0 sm:right-0 p-6 z-10">
+                        @auth
 
+                            <span class=" fw-bold text-uppercase " style="color: #757575; ">Vitaj, {{auth()->user()->name}} !</span>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-black" href="#" role="button"
+                            <div class="dropup ">
+                                <!-- IKONA-->
+                                <a class="nav-link  dropdown-toggle text-black text-center" href="#" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false" id="dropdown-label">
                                     <i class="bi bi-person-circle"></i>
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdown-label">
-                                    <li><a class="dropdown-item" href="/login">Prihlásenie</a></li>
-                                    <li><a class="dropdown-item" href="/register">Registrácia</a></li>
+                                <!-- ELEMENTY-->
+                                <ul class="dropdown-menu " aria-labelledby="dropdown-label">
+                                    <li>
+                                        <form method="get" action="/create" class="font-bold">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger dropdown-item">Pridaj príspevok</button>
+                                        </form>
+                                    </li>
+
+                                    <li><a class="dropdown-item" href="#">Informácie o profile</a></li>
+
+                                    <li>
+                                        <form method="POST" action="/logout" class="font-bold">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger dropdown-item">Odhlásenie</button>
+                                        </form>
+                                    </li>
+
                                 </ul>
-                            </li>
-                            @else
-                        </ul>
-                        <span class=" text-center fw-bold text-uppercase ms-3 me-2" style="color: #757575;">Vitaj, {{auth()->user()->name}} !</span>
+                            </div>
+                        @else
 
-                        <form method="POST" action="/logout" class=" fw-bold  ">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">Odlásenie</button>
-                        </form>
+                            <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Prihlásenie</a>
 
-                    @endguest
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Registrácia</a>
+                            @endif
 
-
-                </nav>
+                        @endauth
+                    </div>
+                @endif
             </div>
         </div>
     </header>
@@ -81,5 +92,18 @@
 
 
 </body>
+
+<!-- Bootstrap JavaScript Bundle with Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+<!-- Alpine.js -->
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-min.js" defer></script>
+
+<!-- jQuery (required for Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
 
 </html>

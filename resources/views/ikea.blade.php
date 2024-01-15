@@ -115,6 +115,8 @@
 
 
 <div id="mountId">
+    <img src="{{ asset('storage/images/2x1qRGpX4feD4xYaxIWaCuxfXlA6L5SWu5DNbLZl.png') }}" alt="ou nou">
+
     <main class="core-container svelte-xgsrjc">
         <section class="intro-container svelte-1c4i6cb has-animation"
                  style="--text-color:#fff;--overlay-light:0%;--overlay-alpha:0.5;--mobile-alpha:0.3;--play-reserve-space:100px;--play-margin:0 0 0 auto">

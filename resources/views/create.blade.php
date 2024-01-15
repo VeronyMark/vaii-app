@@ -125,7 +125,10 @@
                                         <span id="selectedCategory">Vyber kategóriu</span>
                                     </button>
                                     <div class="dropdown-menu">
-                                        @foreach ($categories as $category)
+
+
+
+                                    @foreach ($categories as $category)
                                             <a class="dropdown-item" href="#" onclick="selectCategory('{{ $category->id }}', '{{ $category->name }}')">
                                                 {{ $category->name }}
                                             </a>

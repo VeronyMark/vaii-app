@@ -21,37 +21,34 @@ use App\Models\User;
 |
 */
 
+Route::get('/', function () {
+    return view('homePage', [
+        'posts' => Post::latest()->with('category','author') ->get()
+    ]);
+});
 
 //HOMEPAGE
-Route::get('/', function () {
-    return view('welcome', [
-    'posts' => Post::latest()->with('category','author') ->get()
-    ]);
-})->name('welcome');;
+Route::get('/posts', function () {
+    $posts = Post::latest()->with('category', 'author')->get();
+    $categories = Category::all();
 
+    // Use compact to create an array of variables
+    return view('welcome', compact('posts', 'categories'));
+
+})->name('welcome');
 
 Route::get('posts/{post:slug}', function (Post $post) {
     return view('post', ['post' => $post]);
 });
 
-Route::get('/d', function () {
-    return view('dropdown');
-});
 
 
 Route::get('/ikeaa', function () {
     return view('ikea');
 });
 
-Route::get('/sk', function () {
-    return view('skuska', [
-        'posts' => Post::latest()->with('category','author') ->get()
-    ]);
-});
 
-Route::get('/s', function () {
-    return view('s');
-});
+
 
 
 

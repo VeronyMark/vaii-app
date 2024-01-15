@@ -10,6 +10,8 @@ use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 
 
 
@@ -20,13 +22,13 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+  /*  public function index()
     {
         $posts = Post::all();
 
         return view('posts.index', compact('posts'));
     }
-
+*/
     /**
      * Store a newly created resource in storage.
      *
@@ -46,9 +48,14 @@ class PostController extends Controller
          //   'images.*' => 'image|mimes:jpeg,png,jpg|max:2048', // Allow multiple images
             'category_id' => 'required', // Assuming you have a 'categories' table
             'excerpt' => 'required|max:500',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate the single image
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg', // Validate the single image|max:2048
 
         ]);
+
+
+// Automatically generate a unique ID for filename...
+        //$path = Storage::putFile('images', new File($request->file('image')));
+        //$path = Storage::putFile('images', new File($request->file('image')));
 
 
         $imagePath = null;
@@ -56,13 +63,13 @@ class PostController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
         }
-/*
-        if ($request->hasFile('image')) {
+
+        /*if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
+*/
 
-        } */
             // Create a new post in the database
         Post::create([
             'user_id' => $request->user()->id, // Assuming you have user authentication
@@ -74,11 +81,12 @@ class PostController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'published_at' => Carbon::now(),
+          //  'image_path' => $path// $imagePath,
             'image_path' => $imagePath,
 
         ]);
 
-        return redirect()->route('welcome');
+        return redirect()->route('welcome')->with('success','uspech');
 
 
 
@@ -136,6 +144,9 @@ class PostController extends Controller
         return redirect()->route('welcome');
 
     }
+
+
+
 }
 
 
