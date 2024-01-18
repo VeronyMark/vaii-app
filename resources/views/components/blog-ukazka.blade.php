@@ -8,20 +8,20 @@
         <img src="{ Storage::url('app/'.$post->image_path) }}" alt="obrastek">
         <img src="{ asset('storage/app/images/lojyYW3uyvtWImMcPIrKmNvTRTgucsS3Xe3KUvtI.jpg') }}" alt="obrastek">
         <img src="{ asset('storage/app/photos/1hXSKQOdHAbFFYEcXbkzjmEvgXqSXZc1zGkDoNHB.jpg') }}" alt="Image">
--->
+
         <?php
         // Assuming $post is the variable that contains your data
         $imageUrl = url('storage/app' . $post->image_path);
         ?>
 
-        <img src="{{ $imageUrl }}" alt="Your Alt Text">
+        <img src="{ $imageUrl }}" alt="Your Alt Text">
 
 
-        <img src="{{ Storage::url($imageUrl)}}" alt="zas nic" />
-        <img src="{{ Storage::url("storage/app/{ $post->image_path}") }}" alt="zas nic" />
-        <img src="{{ Storage::url('public/images/2x1qRGpX4feD4xYaxIWaCuxfXlA6L5SWu5DNbLZl.png') }}" alt="obrastek">
+        <img src="{ Storage::url($imageUrl)}}" alt="zas nic" />
+        <img src="{ Storage::url("storage/app/{ $post->image_path}") }}" alt="zas nic" />
+        <img src="{ Storage::url('public/images/2x1qRGpX4feD4xYaxIWaCuxfXlA6L5SWu5DNbLZl.png') }}" alt="obrastek">
 
-        <!--style="height: 250px; background-image: url('{ asset('Images/modrotlac.jpg') }}'); background-size: cover; position: relative;"> -->
+        !--style="height: 250px; background-image: url('{ asset('Images/modrotlac.jpg') }}'); background-size: cover; position: relative;"> -->
         <div class="col-md-6 d-flex flex-column  position-static p-4"
              style="background: rgba(255, 255, 255, 0.85);">
             <p style="color:grey ">

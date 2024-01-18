@@ -4,11 +4,19 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 
+use App\Http\Controllers\LikeController;
 
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\User;
+use App\Http\Controllers\ConsoleController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SessionController;
+
+
+use App\Models\Comment;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,17 +33,27 @@ Route::get('/', function () {
     return view('homePage', [
         'posts' => Post::latest()->with('category','author') ->get()
     ]);
-});
+})->name('home');
 
 //HOMEPAGE
+
+/*
 Route::get('/posts', function () {
-    $posts = Post::latest()->with('category', 'author')->get();
     $categories = Category::all();
+
+    $posts = Post::latest()->with('category', 'author')->paginate(5);
 
     // Use compact to create an array of variables
     return view('welcome', compact('posts', 'categories'));
 
-})->name('welcome');
+})->name('welcome'); */
+
+Route::get('/posts', [PostController::class, 'index'])->name('welcome');
+
+
+
+
+
 
 Route::get('posts/{post:slug}', function (Post $post) {
     return view('post', ['post' => $post]);
@@ -47,8 +65,12 @@ Route::get('/ikeaa', function () {
     return view('ikea');
 });
 
+Route::get('/skuska', function () {
+    return view('skuska');
+});
 
-
+Route::post('/skuska/s', [LikeController::class, 'toggleLike']);
+Route::post('/skuska/comments', [CommentController::class, 'submitComment']);
 
 
 
@@ -68,11 +90,14 @@ Route::delete('posts/{post}/destroy', [PostController::class, 'destroy'])->name(
 
 //Route::post('/create', [PostController::class, 'store']); // Add this line for the POST request
 
-Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('edit');
+Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('post.edit');
 Route::put('/posts/{post}', PostController::class .'@update')->name('update');
 
 
 
+// V routes/web.php
+//Route::post('posts/{post:slug}/comments', 'CommentController@store');
+Route::get('posts/{post:slug}/comments', 'CommentController@edit');
 
 
 
@@ -80,10 +105,12 @@ Route::put('/posts/{post}', PostController::class .'@update')->name('update');
 
 
 //KOMENTÁRE
-Route::post('posts/{post:slug}/comments', [PostCommentsController::class, 'store']);
-Route::get('posts/{comment}/edit', [PostCommentsController::class, 'edit'])->name('comments.edit');
-Route::put('posts/{comment}/update', [PostCommentsController::class, 'update'])->name('comments.update');
-Route::delete('posts/{comment}/destroy', [PostCommentsController::class, 'destroy'])->name('comments.delete');
+/*
+Route::post('posts/{post:slug}/comments', [CommentController::class, 'store'])->name('comment.store');
+Route::get('posts/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+*/
+Route::put('posts/{comment}/update', [CommentController::class, 'update'])->name('comments.update');
+Route::delete('posts/{comment}/destroy', [CommentController::class, 'destroy'])->name('comments.delete');
 
 
 

@@ -25,12 +25,12 @@
 
 <body>
 
-<div class="relative sm:flex sm:justify-center sm:items-center min-h-screen  bg-center  selection:bg-blue selection:text-white">
+<div class="relative sm:flex sm:justify-center sm:items-center min-h-screen  bg-center   ">
     @if (Route::has('login'))
-        <div class="sm:fixed sm:top-0 sm:right-0 p-6 z-10">
+        <div class="sm:fixed sm:top-0 sm:right-0 p-6 z-10 text-center">
             @auth
 
-                <span class=" fw-bold text-uppercase " style="color: #757575; ">Vitaj, {{auth()->user()->name}} !</span>
+                <span class=" fw-bold text-uppercase  " style="color: #757575; ">Vitaj, {{auth()->user()->name}} !</span>
 
                 <div class="dropup ">
                     <!-- IKONA-->
@@ -60,21 +60,24 @@
                 </div>
             @else
 
-                <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Prihlásenie</a>
+                <a href="{{ route('login') }}"
+                   class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm  ">Prihlásenie</a>
 
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Registrácia</a>
+                    <a href="{{ route('register') }}"
+                       class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm ">Registrácia</a>
                 @endif
 
             @endauth
+            <button class="btn btn-dark  mx-auto d-block  "
+                    onclick="window.location.href='{{ route("welcome") }}'">ZOBRAZ VŠETKY BLOGY
+            </button>
         </div>
     @endif
 
-    <!--NOVE -->
     <div class="row">
         <div class="col-lg-6">
             <div style="height: 100vh">
-                <!--    <div class="visual-container svelte-1c4i6cb has-animation" style="height: 100vh; overflow: hidden;"> -->
                 <img style="object-fit: cover; width: 100%; height: 100%;"
                      src="{{asset('Images/modrotlac.jpg')}}"
                      alt="Uvodná strana"
@@ -179,7 +182,7 @@
 <div class="container mt-16 ">
     @if ($posts->count())
         <div class="col-lg-12">
-            <h3 class="pb-4 mb-4 fst-italic border-bottom mt-16">Nenechaj si újsť náš najnovší blog </h3>
+            <h3 class="pb-4 mb-4 border-bottom mt-16">Nenechaj si újsť náš najnovší blog </h3>
             <x-blog-ukazka :post="$posts[0]"/>
         </div>
 
