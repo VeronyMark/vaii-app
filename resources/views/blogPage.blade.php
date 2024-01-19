@@ -82,13 +82,13 @@
             <!-- Pravý panel s článkami -->
             <div class="col-md-8" style="margin-top: 20px;">
                 <h3 class="pb-4 mb-4  border-bottom">UVEREJNENÉ BLOGY </h3>
-                @if ($posts->count()>1)
+                @if ($posts->count()>=1)
                 <div>
                         @foreach($posts as $postik)
                             <x-blog-ukazka :post="$postik"/>
                         @endforeach
 
-                    </div>
+                </div>
 
 
                     <!--

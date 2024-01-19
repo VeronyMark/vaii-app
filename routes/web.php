@@ -14,6 +14,8 @@ use App\Models\User;
 use App\Http\Controllers\ConsoleController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\TaskController;
+use Illuminate\Support\Facades\Auth;
 
 
 use App\Models\Comment;
@@ -50,27 +52,9 @@ Route::get('/posts', function () {
 
 Route::get('/posts', [PostController::class, 'index'])->name('welcome');
 
-
-
-
-
-
 Route::get('posts/{post:slug}', function (Post $post) {
     return view('post', ['post' => $post]);
 });
-
-
-
-Route::get('/ikeaa', function () {
-    return view('ikea');
-});
-
-Route::get('/skuska', function () {
-    return view('skuska');
-});
-
-Route::post('/skuska/s', [LikeController::class, 'toggleLike']);
-Route::post('/skuska/comments', [CommentController::class, 'submitComment']);
 
 
 
@@ -78,8 +62,16 @@ Route::post('/skuska/comments', [CommentController::class, 'submitComment']);
 //get view
 Route::get('/create', [PostController::class, 'create'])->name('create');
 Route::post('/store', [PostController::class, 'store'])->name('store');
-Route::delete('posts/{post}/destroy', [PostController::class, 'destroy'])->name('delete');
 
+
+Route::delete('posts/{post}/destroy', [PostController::class, 'destroy'])->name('post.delete');
+
+Route::get('/edit-post/{id}', [PostController::class , 'edit']);
+Route::put('/update-post/{id}', [PostController::class, 'update']);
+
+
+//Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('post.edit');
+//Route::put('/posts/{post}', [PostController::class, 'update'])->name('post.update');
 
 //route for creating post
 //Route::get('/create', PostController::class . '@create')->name('create');
@@ -90,27 +82,31 @@ Route::delete('posts/{post}/destroy', [PostController::class, 'destroy'])->name(
 
 //Route::post('/create', [PostController::class, 'store']); // Add this line for the POST request
 
-Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('post.edit');
-Route::put('/posts/{post}', PostController::class .'@update')->name('update');
 
 
 
-// V routes/web.php
-//Route::post('posts/{post:slug}/comments', 'CommentController@store');
+
+/* V routes/web.php
+Route::post('posts/{post:slug}/comments', 'CommentController@store');
 Route::get('posts/{post:slug}/comments', 'CommentController@edit');
-
-
-
+*/
 
 
 
 //KOMENTÁRE
-/*
-Route::post('posts/{post:slug}/comments', [CommentController::class, 'store'])->name('comment.store');
-Route::get('posts/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
-*/
-Route::put('posts/{comment}/update', [CommentController::class, 'update'])->name('comments.update');
+
+Route::post('posts/{post:slug}/comments', [CommentController::class, 'store'])->name('comments.store');
+//Route::get('posts/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+//Route::put('posts/{comment}/update', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('posts/{comment}/destroy', [CommentController::class, 'destroy'])->name('comments.delete');
+
+
+Route::get('/edit-comment/{id}', [CommentController::class, 'edit']);
+Route::put('/update-comment/{id}', [CommentController::class, 'update']);
+
+
+
+
 
 
 
@@ -124,5 +120,35 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+Route::get('/ikeaa', function () {
+    return view('ikea');
+});
+
+Route::group(['middleware'=>'auth'],function(){
+    Route::get('data', [App\Http\Controllers\TaskController::class,'getData'])->name('data');
+});
+
+
+
+
+/*
+Route::get('/skuska', function () {
+    return view('skuska');
+});
+
+Route::resource('/task', 'TaskController');
+
+
+
+//Route::get('/skuska', function () {
+//    return view('skuska');
+//});
+
+//Route::post('/skuska/s', [LikeController::class, 'toggleLike']);
+//Route::post('/skuska/comments', [CommentController::class, 'submitComment']);
+
+*/
 
 require __DIR__.'/auth.php';

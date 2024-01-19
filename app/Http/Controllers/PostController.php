@@ -122,6 +122,36 @@ class PostController extends Controller
 
     // return back();
 
+    public function update(Request $request,$id)
+    {
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required',
+            'excerpt' => 'required|max:500',
+            // Add other validation rules as needed
+        ]);
+
+        // Update the post attributes
+        $post = Post::find($id);
+       /* $post->title = $request->input('title');
+         $post->body = $request->input('body');
+        $post-> excerpt = $request->input('excerpt');
+        */
+        $post->update([
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
+            'excerpt' => $request->input('excerpt'),
+            // Update other attributes as needed
+        ]);
+
+        // You can return a JSON response if needed
+        return response()->json(['message' => 'Post updated successfully']);
+    }
+
+
+
+
 
     /**
      * Show the form for creating a new post.
@@ -137,19 +167,39 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
+        if($post) {
+            return response()->json([
+                'status'=>200,
+                'message'=>$post,
+            ]);
+        } else {
+            return response()->json([
+                'status'=>404,
+                'message'=>'NOT FOUND',
+                ]);
+        }
 
-        return view('edit', compact('post'));
+       // return view('edit', compact('post'));
     }
 
     public function destroy(Post $post)
     {
 
         $post->delete();
-        return back();
-      //  return redirect()->route('welcome');
+      //  return view('welcome')  ;
+       return redirect()->route('welcome');
 
     }
 
+
+    /*public function fetchPost()
+    {
+        $post = Post::;
+        return response()->json([
+            'post'=>$post,
+        ]);
+
+    }*/
 
 }
 

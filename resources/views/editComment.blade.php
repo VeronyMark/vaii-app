@@ -1,8 +1,8 @@
-<x-layout>
+<!--<x-layout>
 
-    <form method="post" action="{{ route('comments.update', ['comment' => $comment]) }}" class="mt-4">
-        @csrf
-        @method('put')
+    <form method="post" action="{ route('comments.update', ['comment' => $comment]) }}" class="mt-4">
+        @srf
+        method('put')
 
         <article class="d-flex bg-light border rounded p-4 mb-4">
             <div class="flex-shrink-0 mr-4">
@@ -36,3 +36,17 @@
 
 
 </x-layout>
+-->
+
+
+<form id="editCommentForm" data-comment-id="{{ $comment->id }}">
+    @csrf
+    @method('put')
+
+    <div class="form-group">
+        <label for="editedBody">Edit Comment:</label>
+        <textarea class="form-control" id="editedBody" name="body" rows="3" required>{{ $comment->body }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
