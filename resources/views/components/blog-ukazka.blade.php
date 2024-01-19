@@ -2,26 +2,26 @@
 @props(['post'])
 
 <div class="col-md-8">
+    <!--background-image: url('{ asset('storage/' . $post->image_path) }}') --->
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm"
-         style="height: 250px; background-image: url('{{ asset('storage/' . $post->image_path) }}');background-size: cover; position: relative;">
-        <!--  <p>{ asset('storage/' . $post->image_path) }}</p>
-        <img src="{ Storage::url('app/'.$post->image_path) }}" alt="obrastek">
-        <img src="{ asset('storage/app/images/lojyYW3uyvtWImMcPIrKmNvTRTgucsS3Xe3KUvtI.jpg') }}" alt="obrastek">
-        <img src="{ asset('storage/app/photos/1hXSKQOdHAbFFYEcXbkzjmEvgXqSXZc1zGkDoNHB.jpg') }}" alt="Image">
-
-        <?php
-        // Assuming $post is the variable that contains your data
-        $imageUrl = url('storage/app' . $post->image_path);
-        ?>
-
-        <img src="{ $imageUrl }}" alt="Your Alt Text">
+         style="height: 250px;  background-image: url('{{asset('images/'.$post->image)  }}')
+         ;background-size: cover; position: relative;"
+    >
+       <!--
+        <img src="{{ asset('images/1705272226.png') }}">
+        <img src="{{ asset('images/'.$post->image)}}">
 
 
-        <img src="{ Storage::url($imageUrl)}}" alt="zas nic" />
-        <img src="{ Storage::url("storage/app/{ $post->image_path}") }}" alt="zas nic" />
-        <img src="{ Storage::url('public/images/2x1qRGpX4feD4xYaxIWaCuxfXlA6L5SWu5DNbLZl.png') }}" alt="obrastek">
 
-        !--style="height: 250px; background-image: url('{ asset('Images/modrotlac.jpg') }}'); background-size: cover; position: relative;"> -->
+            <img src="{{ asset('storage/imges/1BsZYecFBvS3Ni8ehxUhC3C0F8TLi0gENoEFyABu.jpg' ) }}" alt="{{ $post->title }}">
+            <img url="{{ asset('storage/app/public/post/17D19lRvwJB8vcLkQBoiyybpX50uIXPXsJUlbWu5.jpg' ) }}" alt="ni">
+
+            <img src="{{ asset($post->image_path) }}" alt="{{ $post->title }}">
+
+        <img src="{{ asset('storage/'.$post->image) }}" alt="postik">
+-->
+
+
         <div class="col-md-6 d-flex flex-column  position-static p-4"
              style="background: rgba(255, 255, 255, 0.85);">
             <p style="color:grey ">

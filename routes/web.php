@@ -52,9 +52,11 @@ Route::get('/posts', function () {
 
 Route::get('/posts', [PostController::class, 'index'])->name('welcome');
 
-Route::get('posts/{post:slug}', function (Post $post) {
+Route::get('posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+
+/*Route::get('posts/{post:slug}', function (Post $post) {
     return view('post', ['post' => $post]);
-});
+});*/
 
 
 
@@ -64,10 +66,17 @@ Route::get('/create', [PostController::class, 'create'])->name('create');
 Route::post('/store', [PostController::class, 'store'])->name('store');
 
 
-Route::delete('posts/{post}/destroy', [PostController::class, 'destroy'])->name('post.delete');
+Route::delete('posts/{post:slug}/destroy', [PostController::class, 'destroy'])->name('post.delete');
 
-Route::get('/edit-post/{id}', [PostController::class , 'edit']);
-Route::put('/update-post/{id}', [PostController::class, 'update']);
+
+// Route for updating the post content
+Route::put('/update-post/{post}', [PostController::class, 'updatePost'])->name('post.update');
+
+// Route for getting the post data for in-place editing
+Route::get('/edit-post/{post}', [PostController::class, 'editPost'])->name('post.edit');
+
+//Route::get('/edit-post/{id}', [PostController::class , 'edit']);
+//Route::put('/update-post/{id}', [PostController::class, 'update']);
 
 
 //Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('post.edit');
@@ -98,7 +107,8 @@ Route::get('posts/{post:slug}/comments', 'CommentController@edit');
 Route::post('posts/{post:slug}/comments', [CommentController::class, 'store'])->name('comments.store');
 //Route::get('posts/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
 //Route::put('posts/{comment}/update', [CommentController::class, 'update'])->name('comments.update');
-Route::delete('posts/{comment}/destroy', [CommentController::class, 'destroy'])->name('comments.delete');
+//Route::delete('posts/{comment}/destroy', [CommentController::class, 'destroy'])->name('comments.delete');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.delete');
 
 
 Route::get('/edit-comment/{id}', [CommentController::class, 'edit']);

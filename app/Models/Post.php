@@ -24,7 +24,7 @@ class Post extends Model
         'excerpt',
         'body',
         'slug',
-        'image_path',
+        'image',
 
     ];
 
@@ -43,9 +43,16 @@ class Post extends Model
         return $this->belongsTo(User::class,'user_id');       //foreign key nie je author_id ale user_id
     }
 
+    /*
     public function images()
     {
         return $this->hasMany(Image::class);
+    } */
+    public function getImageURL() {
+        if($this->image) {
+            return url('storage/'.$this->image);
+        }
+        return "";  //basic one
     }
 
 }

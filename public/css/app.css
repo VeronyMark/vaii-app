@@ -751,4 +751,8 @@ img, video {
 }
 
 
-
+ .editable {
+     border: 2px solid #3498db; /* Highlight color */
+     outline: none; /* Remove default focus border */
+     box-shadow: 0 0 5px rgba(52, 152, 219, 0.7); /* Optional shadow effect */
+ }

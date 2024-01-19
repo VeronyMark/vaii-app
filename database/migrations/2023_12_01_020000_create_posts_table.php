@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('excerpt');
             $table->text('body');
-            $table->string('image_path')->nullable(); // or $table->binary('image')->nullable();
+            $table->string('image')->nullable(); // or $table->binary('image')->nullable();
 
             $table->timestamps();
             $table->timestamp('published_at')->nullable();

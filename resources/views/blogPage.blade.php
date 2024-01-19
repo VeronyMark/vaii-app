@@ -35,7 +35,24 @@
 
 
 
+
+
     <main class="container">
+        @if(session()->has('statusPostOk'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong> {{ session()->get('statusPostOk') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif(session()->has('statusDeleteOk'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong> {{ session()->get('statusDeleteOk') }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        @endif
+
+
+
+
         <div class="row ">
             <!-- Ľavý panel -->
             <div class="col-md-4">

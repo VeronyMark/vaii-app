@@ -32,15 +32,18 @@
                     Zmeň
                 </button>
 
-                <!--   <div id="app"
 
-                    <form @submit.prevent="deleteComment(comment.id)"> -->
-                <form class="deleteCommentForm">
+
+
+
+                <form method="post" action="{{ route('comments.delete', ['comment' => $comment]) }}" class="mt-4">
 
                     @csrf
                     @method('delete')
 
-                    <button type="submit" class="deleteComment btn btn-sm btn-outline-danger">Zmaž</button>
+                    @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Zmaž Komentár</button>
+                    @endif
                 </form>
             </div>
         @endif

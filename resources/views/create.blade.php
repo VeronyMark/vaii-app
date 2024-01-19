@@ -101,20 +101,46 @@
 </div>
 
 <main class="container mt-6">
+    @include('flash-message')
+
     <article>
         <div class="container h-100 mt-5">
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-10 col-md-8 col-lg-6">
                     <h3><strong>PRIDAJ ČLÁNOK</strong></h3>
 
+<!--  Display validation errors -->
+                 <!--   @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+-->
+                    <!--            <div>
+            <x-input-label for="name" :value="__('Name')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
 
+
+   -->
                     <form method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group mt-4 row">
                             <div class="col-md-6">
+
                                 <label for="title">NÁDPIS</label>
-                                <input type="text" class="form-control" id="title" name="title" required>
+                                <input type="text"  class="form-control @error('title') is-invalid @enderror" id="title" name="title" required>
+                                @error('title')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
                             </div>
+
                             <div class="col-md-6">
                                 <label for="category_id" name="category_id">KATEGÓRIA</label>
                                 <!-- Change the input type to text to show the selected category -->
@@ -149,11 +175,12 @@
                             <label for="body">ČLÁNOK</label>
                             <textarea class="form-control" id="body" name="body" rows="40" required></textarea>
                         </div>
+
                         <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
 
                         <div class="form-group mt-4">
                             <label for="image">Obrázok</label>
-                            <input type="file" name="image" class="form-control" accept="image/*" />
+                            <input type="file" name="image" class="form-control"/> <!--accept="image/*" /> -->
 
                         </div>
 
