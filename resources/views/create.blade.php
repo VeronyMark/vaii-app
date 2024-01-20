@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>TRM-blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -19,42 +20,21 @@
 
     <!-- Your additional styles and scripts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- <script src="{ asset('js/fotkoAdd.js') }}"></script> -->
+    <script src="{{ asset('js/odosliFormular.js') }}"></script>
+
 
     <script>
-    function selectCategory(selectedCategoryId, selectedCategoryName) {
-        console.log('Selected Category ID:', selectedCategoryId);
-        console.log('Selected Category Name:', selectedCategoryName);
+        function selectCategory(selectedCategoryId, selectedCategoryName) {
+            // console.log('Selected Category ID:', selectedCategoryId);
+            // console.log('Selected Category Name:', selectedCategoryName);
 
-        document.getElementById('selectedCategory').innerText = selectedCategoryName;
-        document.getElementById('selected_category_id').value = selectedCategoryId;
-    }
-</script>
+            document.getElementById('selectedCategory').innerText = selectedCategoryName;
+            document.getElementById('selected_category_id').value = selectedCategoryId;
+        }
+    </script>
 
-<!--
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var dropdownItems = document.querySelectorAll('.dropdown-menu a');
 
-            dropdownItems.forEach(function (item) {
-                item.addEventListener('click', function (event) {
-                    event.preventDefault();
-
-                    var selectedCategoryName = item.getAttribute('data-category-name');
-                    var selectedCategoryId = item.getAttribute('data-category-id');
-
-                    console.log('Selected Category ID:', selectedCategoryId);
-                    console.log('Selected Category Name:', selectedCategoryName);
-
-                    document.getElementById('selectedCategory').innerText = selectedCategoryName;
-                    document.getElementById('selected_category_id').value = selectedCategoryId; // Change the ID here
-                });
-            });
-        });
-    </script>    -->
 </head>
-
-
 
 
 <body>
@@ -109,32 +89,15 @@
                 <div class="col-10 col-md-8 col-lg-6">
                     <h3><strong>PRIDAJ ČLÁNOK</strong></h3>
 
-<!--  Display validation errors -->
-                 <!--   @if($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
--->
-                    <!--            <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
 
-
-   -->
-                    <form method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
+                    <form  id="createPostForm" method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group mt-4 row">
                             <div class="col-md-6">
 
                                 <label for="title">NÁDPIS</label>
-                                <input type="text"  class="form-control @error('title') is-invalid @enderror" id="title" name="title" required>
+                                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"
+                                       name="title" required>
                                 @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -144,7 +107,8 @@
                             <div class="col-md-6">
                                 <label for="category_id" name="category_id">KATEGÓRIA</label>
                                 <!-- Change the input type to text to show the selected category -->
-                                <input type="text" class="form-control" id="selected_category_id" name="category_id" readonly required>
+                                <input type="text" class="form-control" id="selected_category_id" name="category_id"
+                                       readonly required>
                                 <div class="btn-group dropright">
                                     <button type="button" class="btn btn-secondary dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -153,9 +117,9 @@
                                     <div class="dropdown-menu">
 
 
-
-                                    @foreach ($categories as $category)
-                                            <a class="dropdown-item" href="#" onclick="selectCategory('{{ $category->id }}', '{{ $category->name }}')">
+                                        @foreach ($categories as $category)
+                                            <a class="dropdown-item" href="#"
+                                               onclick="selectCategory('{{ $category->id }}', '{{ $category->name }}')">
                                                 {{ $category->name }}
                                             </a>
                                         @endforeach
@@ -191,6 +155,39 @@
         </div>
     </article>
 </main>
+<div id="postContent" class="mt-6" style="display: none;"></div>
 
 </body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Handle form submission using AJAX
+        $('#createPostForm').submit(function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Create a FormData object to handle file uploads
+            var formData = new FormData(this);
+
+            // Make the AJAX request
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // Hide the form
+                    $('#createPostForm').hide();
+
+                    // Display the post content
+                    $('#postContent').html(response.post).show();
+                },
+                error: function (error) {
+                    console.error('Error creating post:', error);
+                    // Handle errors as needed
+                }
+            });
+        });
+    });
+</script>
 </html>

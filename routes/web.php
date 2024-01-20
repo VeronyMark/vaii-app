@@ -70,7 +70,8 @@ Route::delete('posts/{post:slug}/destroy', [PostController::class, 'destroy'])->
 
 
 // Route for updating the post content
-Route::put('/update-post/{post}', [PostController::class, 'updatePost'])->name('post.update');
+Route::put('/update-post/{post}', [PostController::class, 'update'])->name('post.update');
+//Route::put('/update-post/{post}', [PostController::class, 'updatePost'])->name('post.update');
 
 // Route for getting the post data for in-place editing
 Route::get('/edit-post/{post}', [PostController::class, 'editPost'])->name('post.edit');
