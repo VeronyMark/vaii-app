@@ -290,7 +290,6 @@
             var postId = {{$post->id}};
             var data = {};
 
-            // Loop through editable elements and collect updated content
             $('[contenteditable="true"]').each(function () {
                 var type = $(this).data('type');
 
@@ -326,8 +325,6 @@
                             console.error('Unexpected error structure:', error);
                             alert('Error creating post. Please try again.');
                         }
-
-
                 }
             });
 

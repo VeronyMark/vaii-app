@@ -78,7 +78,7 @@
                     },
                     success: function (response) {
 
-                        showStyledAlert("/posts/" + postDetails.slug, "KOMENTÁR JE ODSTRÁNENÝ");
+                        showStyledAlert("/posts/" + postId, "KOMENTÁR JE ODSTRÁNENÝ");
 
                     },
                     error: function (error) {
@@ -108,6 +108,13 @@
         });
     }
 
+    function showError(text) {
+        Swal.fire({
+            icon: 'error',
+            text: text,
+            showConfirmButton: true,
+        });
+    }
 
 
     //NAJSKOR EDIT
@@ -168,14 +175,18 @@
 
                         $('.comment-body').html(data.body);
 
-                        showStyledAlert("/posts/" + postDetails.slug, "KOMENTÁR JE AKTUALIZOVANÝ");
-
-                      //  window.location.href = "/posts/" + postDetails.slug;
-
+                        showStyledAlert("/posts/" + postId, "KOMENTÁR JE AKTUALIZOVANÝ");
 
                     },
                     error: function (error) {
-                        console.error('Error updating post:', error);
+                        if (error.responseJSON && error.responseJSON.message) {
+                            showError(error.responseJSON.message);
+                        } else {
+                            console.error('Unexpected error structure:', error);
+                            alert('Error creating post. Please try again.');
+                        }
+
+
                     }
                 });
             },

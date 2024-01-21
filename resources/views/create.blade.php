@@ -169,7 +169,7 @@
                 error: function (error) {
 
                     if (error.responseJSON && error.responseJSON.message) {
-                        showStyledAlert(error.responseJSON.message);
+                        showError(error.responseJSON.message);
                     } else {
                         console.error('Unexpected error structure:', error);
                         alert('Error creating post. Please try again.');
@@ -178,16 +178,12 @@
                 }
             });
         });
-        function showStyledAlert(text) {
+        function showError(text) {
             Swal.fire({
                 icon: 'error',
                 text: text,
-                showConfirmButton: false,
+                showConfirmButton: true,
                 timer: 3000,
-            }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.timer && redirectUrl) {
-                    window.location.href = redirectUrl;
-                }
             });
         }
 
