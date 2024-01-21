@@ -25,7 +25,7 @@ class PostController extends Controller
     public function index() {
 
         return view('blogPage', [
-            'posts' => (Post::latest()->with('category', 'author'))->paginate(5),
+            'posts' => (Post::latest()->with('category', 'author'))->paginate(8),
             'categories' => Category::all(),
 
         ]);

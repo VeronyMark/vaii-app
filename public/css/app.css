@@ -1,8 +1,3 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities;
-*/
-
 .blog-header {
     border-bottom: 1px solid #e5e5e5;
 
@@ -46,31 +41,15 @@ h1, h2, h3 {
     filter: blur(3px);
 }
 
-.calendarDates {
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(25px, 1fr));
-    grid-gap: 10px;
-    box-sizing: border-box;
-}
 
-.calendar {
-    position: relative;
-    width: 300px;
-    border-radius: 20px;
-    overflow: hidden;
-}
 
 #carouselTrhy {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 3rem;
-    margin-bottom: 4rem;
-    width: 80%; /* Adjust the width as needed */
-    max-width: 1200px; /* Set a maximum width if needed */
-    height: 400px; /* Adjust the height as needed */
-
+    width: 80%;
+    max-width: 1200px;
+    height: 400px;
 }
 
 

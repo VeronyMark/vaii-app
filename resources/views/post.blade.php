@@ -18,8 +18,8 @@
     <!-- Bootstrap Icons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <!-- Your custom CSS -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('Images/modrotlac.jpg') }}" type="image/jpeg">
 
 
 <body>
@@ -127,9 +127,6 @@
         @endif
 
 
-
-
-
         <button class="btn btn-dark btn-lg mx-auto d-block mt-4 mb-5"
                 onclick="window.location.href='{{ route("welcome") }}'">ZOBRAZ VŠETKY BLOGY
         </button>
@@ -200,12 +197,15 @@
                                   readonly placeholder="Napíš nám svoj názor"></textarea>
                     @else
                         <textarea name="body" class="form-control" rows="4"
-                                  placeholder="Napíš nám svoj názor"></textarea>
+                                  placeholder="Napíš nám svoj názor" id="body"  required>
+
+                        </textarea>
+                        <x-input-error :messages="$errors ->get('body')" class="mt-2" />
                     @endguest
 
                 </div>
 
-                <div class="justify-end mt-3 border-t ">
+                <div class="justify-end mt-2 border-t ">
                     @auth
                         @csrf
                         <button type="submit" class="btn btn-dark">ZDIEĽAJ</button>
@@ -220,12 +220,15 @@
                         <x-comment :comment="$comment"/>
                         @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
                             <div class="d-flex">
-                                <button type="button" class="deleteKoment btn btn-sm btn-outline-danger"
-                                        data-comment-id="{{ $comment->id }}">
+                                <button
+                                    type="button" class="deleteKoment btn btn-sm btn-outline-danger"
+                                        data-comment-id="{{ $comment->id }}" >
                                     Zmaž Komentár
                                 </button>
 
-                                <button type="button" class="editComments btn btn-sm btn-success ml-4 me-2"
+                                <button
+
+                                    type="button" class="editComments btn btn-sm btn-success ml-4 me-2"
                                         data-comment-id="{{ $comment->id }}">Zmeň
                                 </button>
                             </div>
@@ -269,11 +272,8 @@
 </main>
 
 
-<!-- Add a Save Changes button -->
-
 <script>
     $(document).ready(function () {
-        // Event handler for the "Edit" button
         $(document).on('click', '.editPost', function (e) {
 
             // Highlight the editable elements
@@ -335,6 +335,21 @@
         });
 
     });
+
+
+/*
+    function showAlert() {
+        var myAlert = document.getElementById('myAlert');
+        myAlert.classList.add('show', 'fade');
+
+        // Optionally, you can hide the alert after a delay
+        setTimeout(function() {
+            myAlert.classList.remove('show');
+        }, 10000); // Hide after 3 seconds (adjust as needed)
+    }
+*/
+
+
 </script>
 
 

@@ -39,25 +39,14 @@ Route::get('/', function () {
 })->name('home');
 
 
-/*
-Route::get('/posts', function () {
-    $categories = Category::all();
-
-    $posts = Post::latest()->with('category', 'author')->paginate(5);
-
-    // Use compact to create an array of variables
-    return view('welcome', compact('posts', 'categories'));
-
-})->name('welcome'); */
-
 //ZOBRAZENIE VSETKYCH POSTOV
 Route::get('/posts', [PostController::class, 'index'])->name('welcome');
 
 //ZOBRAZENIE KONKRETNEHO POSTU
 Route::get('posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
-
-
+//ZOBRAZENIE INFORMACII O POSTE
+Route::get('/posts/{post}/details', [PostController::class,'getPostDetails'])->name('posts.details');
 
 //POSTY
 
@@ -97,10 +86,15 @@ Route::get('/edit-comment/{id}', [CommentController::class, 'edit']);
 Route::put('/update-comment/{id}', [CommentController::class, 'update']);
 
 
-Route::get('/posts/{post}/details', [PostController::class,'getPostDetails'])->name('posts.details');
 
 
 
+Route::get('categories/{category:slug}', function (Category $category) {
+    $posts = $category->posts()->paginate(8);
+    $categories = Category::all();
+
+    return view('blogPage', ['posts' => $posts,  'categories' => $categories]);
+});
 
 
 
@@ -118,12 +112,6 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::get('categories/{category:slug}', function (Category $category) {
-    $posts = $category->posts()->paginate(5);
-    $categories = Category::all();
-
-    return view('blogPage', ['posts' => $posts,  'categories' => $categories]);
-});
 
 
 

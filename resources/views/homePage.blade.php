@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>TRM | blog</title>
+    <title>TRM</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -14,10 +14,8 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Your custom CSS -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    <!-- Your custom favicon -->
     <link rel="shortcut icon" href="{{ asset('Images/modrotlac.jpg') }}" type="image/jpeg">
 
 </head>
@@ -30,7 +28,8 @@
         <div class="sm:fixed sm:top-0 sm:right-0 p-6 z-10 text-center">
             @auth
 
-                <span class=" fw-bold text-uppercase  " style="color: #757575; ">Vitaj, {{auth()->user()->name}} !</span>
+                <span class=" fw-bold text-uppercase  "
+                      style="color: #757575; ">Vitaj, {{auth()->user()->name}} !</span>
 
                 <div class="dropup ">
                     <!-- IKONA-->
@@ -78,11 +77,10 @@
     <div class="row">
         <div class="col-lg-6">
             <div style="height: 100vh">
-                <img style="object-fit: cover; width: 100%; height: 100%;"
-                     src="{{asset('Images/modrotlac.jpg')}}"
-                     alt="Uvodná strana"
-                     loading="eager"
-                />
+
+                <img src="{{ asset('Images/modrotlac.jpg') }}" style="object-fit: cover; width: 100%; height: 100%"
+                     class="  img-fluid" alt="Uvodná strana">
+
             </div>
         </div>
 
@@ -95,7 +93,7 @@
         </div>
     </div>
 </div>
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row">
         <div class="col-md-8 mt-5 mx-auto">
             <p class="lead mb-4">
@@ -117,9 +115,9 @@
 </div>
 
 
-<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    <div class="col-md-4">
-        <div id="carroucel_index" class="carousel slide"  style="width: 100%;">
+<div class=" d-flex justify-content-center align-items-center mt-16 mb-4" style="min-height: 100vh;">
+    <div id="carouselTrhy" class="col-md-4">
+        <div id="carroucel_index" class="carousel slide" style="width: 100%;">
             <div class="carousel-indicators ">
                 <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
                         aria-current="true" aria-label="Slide 1"></button>
@@ -133,7 +131,8 @@
             <div class="carousel-inner">
 
                 <div class="carousel-item active">
-                    <img src="{{ asset('Images/blogPromo.jpg') }}" class="d-block w-100" style="filter: blur(4px) brightness(70%)"  alt="...">
+                    <img src="{{ asset('Images/blogPromo.jpg') }}" class="d-block w-100"
+                         style="filter: blur(4px) brightness(70%)" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5 style="color: whitesmoke">PRIDAJ SA K NÁM A ZAČNI PÍSAŤ!</h5>
                     </div>
@@ -141,14 +140,15 @@
 
                 <div class="carousel-item">
                     <img src="{{ asset('Images/handmadesoap.jpg') }}" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption d-none d-md-block ">
                         <h5 style="color: #333333">PODEĽ SA O SVOJE TYPY </h5>
                     </div>
                 </div>
 
                 <div class="carousel-item">
-                    <img src="{{ asset('Images/trh01.jpg') }}" class="d-block w-100" style="filter: blur(4px) brightness(70%)" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
+                    <img src="{{ asset('Images/trh01.jpg') }}" class="d-block w-100"
+                         style="filter: blur(4px) brightness(70%)" alt="...">
+                    <div class="carousel-caption  d-none d-md-block">
                         <h5>ZISTI VIAC O TRADÍCIACH</h5>
                     </div>
                 </div>
@@ -235,8 +235,6 @@
 </div>
 
 
-
-
 <div class="container mt-16 ">
     @if ($posts->count())
         <div class="col-lg-12">
@@ -250,11 +248,6 @@
     @endif
 
 </div>
-
-
-
-
-
 
 
 <!-- Bootstrap JavaScript Bundle with Popper.js -->

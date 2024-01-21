@@ -1,10 +1,4 @@
 <article class="d-flex bg-light  rounded p-4 mb-4">
-    <!-- <div class="flex-shrink-0 mr-4">
-         !--
-         <img src="https://i.pravatar.cc/60?u={ $comment->user_id }}" alt="" width="60" height="60"
-              class="rounded-circle">    ->
-     </div>
- -->
     <div class="pl-4">
         <header class="mb-2">
             <h3 class="font-weight-bold">{{ $comment->author->username }} </h3>
@@ -12,12 +6,17 @@
                 <time>{{ $comment->updated_at->diffForHumans() }}</time>
             </p>
         </header>
-        <p>{{ $comment->body }}</p>
 
+        @if (strpos($comment->body, ' ') !== false)
+            <p class = "d-flex">{{$comment->body}}</p>
+
+        @else
+            <p id="comment-body">{!! nl2br(e(wordwrap($comment->body, 30, "\n", true))) !!}</p>
+
+        @endif
     </div>
 
 </article>
-
 
 
 <!-- Modal UPDATE MODAL-->
@@ -42,16 +41,20 @@
                 </button>
             </div>
 
-
         </div>
     </div>
 </div>
+
 <!-- POSTMODAL END-->
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.all.min.js"></script>
 
 <script>
+
+
     $(document).on('click', '.deleteKoment', function (e) {
         e.preventDefault();
         var commentId = $(this).data('comment-id');
@@ -59,7 +62,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/posts/" + postId + "/details", // Adjust the route to fetch post details
+            url: "/posts/" + postId + "/details",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -74,9 +77,9 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
-                        console.log("Comment deleted successfully");
-                        // Redirect to the post page using the fetched slug
-                        window.location.href = "/posts/" + postDetails.slug;
+
+                        showStyledAlert("/posts/" + postDetails.slug, "KOMENTÁR JE ODSTRÁNENÝ");
+
                     },
                     error: function (error) {
                         console.error('Error deleting comment:', error);
@@ -85,16 +88,33 @@
             },
             error: function (error) {
                 console.error('Error fetching post details:', error);
+            },
+        });
+
+
+
+    });
+
+    function showStyledAlert(redirectUrl,text) {
+        Swal.fire({
+            icon: 'success',
+            text: text,
+            showConfirmButton: false,
+            timer: 3000,
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer && redirectUrl) {
+                window.location.href = redirectUrl;
             }
         });
-    });
+    }
+
+
 
     //NAJSKOR EDIT
     $(document).on('click', '.editComments', function (e) {
         e.preventDefault();
-        console.log('Edit button clicked'); // Check if this log appears in the console
 
-        var commentId = $(this).data('comment-id'); //{$comment->id}};
+        var commentId = $(this).data('comment-id');
 
         $('#exampleModal').modal('show');
 
@@ -127,7 +147,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/posts/" + postId + "/details", // Adjust the route to fetch post details
+            url: "/posts/" + postId + "/details",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -148,7 +168,9 @@
 
                         $('.comment-body').html(data.body);
 
-                        window.location.href = "/posts/" + postDetails.slug;
+                        showStyledAlert("/posts/" + postDetails.slug, "KOMENTÁR JE AKTUALIZOVANÝ");
+
+                      //  window.location.href = "/posts/" + postDetails.slug;
 
 
                     },
@@ -162,6 +184,10 @@
             }
         });
     });
+
+
+
+
 
 </script>
 
