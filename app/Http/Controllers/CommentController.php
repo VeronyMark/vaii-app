@@ -60,7 +60,6 @@ class CommentController extends Controller
             $comment->update([
                 'body' => $request->input('body'),
             ]);
-//TOFO KONTROLA
 
             request()->session()->flash('statusKomentUpdate', 'Komentár bol úspešne aktualizovaný!');
             return response()->json(['message' => 'Comment updated successfully']);
@@ -71,7 +70,6 @@ class CommentController extends Controller
     }
 
 
-    //TODO KONTROLA ID
     public function destroy($comment_id)
     {
         $comment = Comment::find($comment_id);
