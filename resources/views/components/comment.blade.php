@@ -1,3 +1,4 @@
+
 <article class="d-flex bg-light  rounded p-4 mb-4">
     <!-- <div class="flex-shrink-0 mr-4">
          !--
@@ -36,15 +37,15 @@
 
 
 
-                <form method="post" action="{{ route('comments.delete', ['comment' => $comment]) }}" class="mt-4">
+               <!-- <form method="post" action="{ route('comments.delete', ['comment' => $comment]) }}" class="mt-4">
+-->
+                   <!-- csrf
+                   // method('delete') -->
 
-                    @csrf
-                    @method('delete')
-
-                    @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Zmaž Komentár</button>
-                    @endif
-                </form>
+                    <!--if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
+                        <button type="button" class=" deleteKoment btn btn-sm btn-outline-danger "  >Zmaž Komentár</button>
+                    endif -->
+               <!-- </form> -->
             </div>
         @endif
 
@@ -89,11 +90,54 @@
     </div>
 </div>
 <!-- POSTMODAL END-->
-
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+    $(document).on('click', '.deleteKoment', function (e) {
+        e.preventDefault();
+        console.log("uspech");
 
+        var commentId = $(this).data('comment-id');
 
+//        var commentId = {{$comment->id}};
+        var postId = {{$comment->post_id}};
+
+        console.log(commentId);
+        // Fetch post details including the slug
+        $.ajax({
+            type: "GET",
+            url: "/posts/" + postId + "/details", // Adjust the route to fetch post details
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (postDetails) {
+                // Once you have post details, including the slug, you can use it
+                console.log("Post Slug:", postDetails.slug);
+
+                // Now, you can proceed with the comment deletion
+                $.ajax({
+                    type: "DELETE",
+                    url: "/comments/" + commentId,
+                    data: {
+                        id: commentId
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        console.log("Comment deleted successfully");
+                        // Redirect to the post page using the fetched slug
+                        window.location.href = "/posts/" + postDetails.slug;
+                    },
+                    error: function (error) {
+                        console.error('Error deleting comment:', error);
+                    }
+                });
+            },
+            error: function (error) {
+                console.error('Error fetching post details:', error);
+            }
+        });
+    });
 
     $(document).on('click', '.update_comment', function (e) {
         e.preventDefault();
@@ -158,6 +202,7 @@
 
         });
     });
+
 
 
 

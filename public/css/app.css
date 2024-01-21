@@ -67,7 +67,12 @@ h1, h2, h3 {
     align-items: center;
     margin-top: 3rem;
     margin-bottom: 4rem;
+    width: 80%; /* Adjust the width as needed */
+    max-width: 1200px; /* Set a maximum width if needed */
+    height: 400px; /* Adjust the height as needed */
+
 }
+
 
 /*
 #headerSubPages {
@@ -742,17 +747,43 @@ img, video {
 
 
 
-/* styles.css */
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 50px;
-}
-
 
  .editable {
      border: 2px solid #3498db; /* Highlight color */
      outline: none; /* Remove default focus border */
      box-shadow: 0 0 5px rgba(52, 152, 219, 0.7); /* Optional shadow effect */
  }
+
+
+ .pagination {
+     display: flex;
+     justify-content: center;
+     margin-top: 30px;
+     margin-bottom: 30px;
+ }
+
+.pagination .page-item {
+    list-style: none;
+    margin: 0 5px;
+    display: inline-block;
+}
+
+.pagination .page-link {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: grey;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #696880;
+    color: #fff;
+    border: 1px solid #808080;
+}

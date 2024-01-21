@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    // Event handler for form submission using AJAX
+
+   // $('.create-post-form').submit(function (e) {
     $('#createPostForm').submit(function (e) {
         e.preventDefault(); // Prevent default form submission
 
@@ -25,6 +26,8 @@ $(document).ready(function () {
                 $('.post-title').text(post.title);
                 $('.post-excerpt span').html(post.excerpt);
                 $('.post-body').html(post.body);
+
+
                 window.location.href = '/posts/' + post.slug;
             },
             error: function (error) {

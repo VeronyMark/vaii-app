@@ -31,13 +31,13 @@ use App\Models\Comment;
 |
 */
 
+//HOMEPAGE
 Route::get('/', function () {
     return view('homePage', [
         'posts' => Post::latest()->with('category','author') ->get()
     ]);
 })->name('home');
 
-//HOMEPAGE
 
 /*
 Route::get('/posts', function () {
@@ -50,13 +50,12 @@ Route::get('/posts', function () {
 
 })->name('welcome'); */
 
+//ZOBRAZENIE VSETKYCH POSTOV
 Route::get('/posts', [PostController::class, 'index'])->name('welcome');
 
+//ZOBRAZENIE KONKRETNEHO POSTU
 Route::get('posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
-/*Route::get('posts/{post:slug}', function (Post $post) {
-    return view('post', ['post' => $post]);
-});*/
 
 
 
@@ -109,11 +108,16 @@ Route::post('posts/{post:slug}/comments', [CommentController::class, 'store'])->
 //Route::get('posts/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
 //Route::put('posts/{comment}/update', [CommentController::class, 'update'])->name('comments.update');
 //Route::delete('posts/{comment}/destroy', [CommentController::class, 'destroy'])->name('comments.delete');
-Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.delete');
+Route::delete('/comments/{id}', [CommentController::class, 'destroy']);//->name('comments.delete');
 
 
 Route::get('/edit-comment/{id}', [CommentController::class, 'edit']);
 Route::put('/update-comment/{id}', [CommentController::class, 'update']);
+
+//getPostDetails
+//Route::get('/posts/{post}/details', 'PostController@getPostDetails')->name('posts.details');
+
+Route::get('/posts/{post}/details', [PostController::class,'getPostDetails'])->name('posts.details');
 
 
 
@@ -133,33 +137,14 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/ikeaa', function () {
-    return view('ikea');
+
+Route::get('categories/{category:slug}', function (Category $category) {
+    $posts = $category->posts()->paginate(5);
+    $categories = Category::all();
+
+    return view('blogPage', ['posts' => $posts,  'categories' => $categories]);
 });
 
-Route::group(['middleware'=>'auth'],function(){
-    Route::get('data', [App\Http\Controllers\TaskController::class,'getData'])->name('data');
-});
 
-
-
-
-/*
-Route::get('/skuska', function () {
-    return view('skuska');
-});
-
-Route::resource('/task', 'TaskController');
-
-
-
-//Route::get('/skuska', function () {
-//    return view('skuska');
-//});
-
-//Route::post('/skuska/s', [LikeController::class, 'toggleLike']);
-//Route::post('/skuska/comments', [CommentController::class, 'submitComment']);
-
-*/
 
 require __DIR__.'/auth.php';

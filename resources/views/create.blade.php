@@ -1,137 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sk">
 <head>
     <meta charset="utf-8">
-    <title>TRM-blog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TRM-blog </title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <!-- Bootstrap Icons -->
+    <!-- Bootstrap Icons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- Bootstrap JavaScript, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Your additional styles and scripts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/odosliFormular.js') }}"></script>
+    <link rel="shortcut icon" href="{{ asset('Images/modrotlac.jpg') }}" type="image/jpeg">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+    <!-- Alpine.js
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-min.js" defer></script>-->
 
 
-    <script>
-        function selectCategory(selectedCategoryId, selectedCategoryName) {
-            // console.log('Selected Category ID:', selectedCategoryId);
-            // console.log('Selected Category Name:', selectedCategoryName);
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-            document.getElementById('selectedCategory').innerText = selectedCategoryName;
-            document.getElementById('selected_category_id').value = selectedCategoryId;
-        }
-    </script>
+
+ <!--   <script src="{ asset('js/odosliFormularAJAX.js') }}"></script> -->
+
 
 
 </head>
-
-
 <body>
 
-<div class="container">
-    <header class="blog-header py-5">
-        <div id="headerSubPages" class="row">
-            <div class="col-4"></div>
-
-            <div class="col-4 text-center">
-                <img src="{{ asset('Images/logo/default-monochrome.svg') }}" alt="Logo" class="img-fluid">
-            </div>
-
-            <div class="col-4 d-flex justify-content-center">
-                <nav class="navbar navbar-expand-lg">
-                    @guest
-                        <ul class="nav justify-content-center">
-                            <li class="nav-item">
-                                <a href="/" class="btn btn-dark">Domov</a>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-black" href="#" role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false" id="dropdown-label">
-                                    <i class="bi bi-person-circle"></i>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdown-label">
-                                    <li><a class="dropdown-item" href="/login">Prihlásenie</a></li>
-                                    <li><a class="dropdown-item" href="/register">Registrácia</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    @else
-                        <span class="text-center fw-bold text-uppercase ms-3 me-2" style="color: #757575;">Vitaj, {{auth()->user()->name}}!</span>
-                        <form method="POST" action="/logout" class="fw-bold">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">Odlásenie</button>
-                        </form>
-                    @endguest
-                </nav>
-            </div>
-        </div>
-    </header>
+<div id="postHead"> <x-vrch/>
 </div>
 
 <main class="container mt-6">
     @include('flash-message')
 
+    <button class="btn btn-dark btn-lg mx-auto d-block mt-4 mb-5"
+            onclick="window.location.href='{{ route("welcome") }}'">ZOBRAZ VŠETKY BLOGY
+    </button>
+
     <article>
         <div class="container h-100 mt-5">
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-10 col-md-8 col-lg-6">
-                    <h3><strong>PRIDAJ ČLÁNOK</strong></h3>
+                    <h3>PRIDAJ ČLÁNOK</h3>
 
-
-                    <form  id="createPostForm" method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
+                    <!--                        <form  method="POST" action="{ route('store') }}" -->
+                    <form id="createPostForm" method="POST" action="{{ route('store') }}"
+                          enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group mt-4 row">
-                            <div class="col-md-6">
+                        <div class="form-group mt-4">
 
-                                <label for="title">NÁDPIS</label>
-                                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"
-                                       name="title" required>
-                                @error('title')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <label for="title">NÁDPIS</label>
+                            <input type="text" class="form-control" id="title"
+                                   name="title" required>
 
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="category_id" name="category_id">KATEGÓRIA</label>
-                                <!-- Change the input type to text to show the selected category -->
-                                <input type="text" class="form-control" id="selected_category_id" name="category_id"
-                                       readonly required>
-                                <div class="btn-group dropright">
-                                    <button type="button" class="btn btn-secondary dropdown-toggle"
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span id="selectedCategory">Vyber kategóriu</span>
-                                    </button>
-                                    <div class="dropdown-menu">
+                         <!--   <span style="color: red">error('title'){ $message }} enderror </span>
+-->
+                        </div>
 
 
-                                        @foreach ($categories as $category)
-                                            <a class="dropdown-item" href="#"
-                                               onclick="selectCategory('{{ $category->id }}', '{{ $category->name }}')">
-                                                {{ $category->name }}
-                                            </a>
-                                        @endforeach
-                                    </div>
+                        <div class="form-group mt-4">
+                            <label for="category_id" name="category_id">KATEGÓRIA</label>
+                            <!-- Change the input type to text to show the selected category -->
+                            <input type="text" class="form-control" id="selected_category_id" name="category_id"
+                                   readonly required>
+                            <div class="btn-group dropright">
+                                <button type="button" class="btn btn-secondary dropdown-toggle mt-2"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="selectedCategory">Vyber kategóriu</span>
+                                </button>
+
+                                <div class="dropdown-menu">
+
+
+                                    @foreach ($categories as $category)
+                                        <a class="dropdown-item" href="#"
+                                           onclick="selectCategory('{{ $category->id }}', '{{ $category->name }}')">
+                                            {{ $category->name }}
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
+
                         </div>
 
 
                         <div class="form-group mt-4">
                             <label for="excerpt">UKÁŽKA</label>
-                            <textarea class="form-control" id="excerpt" name="excerpt" rows="4" required></textarea>
+                            <textarea class="form-control" id="excerpt" name="excerpt" rows="7" required></textarea>
                         </div>
 
 
@@ -142,52 +106,104 @@
 
                         <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
 
-                        <div class="form-group mt-4">
-                            <label for="image">Obrázok</label>
-                            <input type="file" name="image" class="form-control"/> <!--accept="image/*" /> -->
+                        <div class="form-group mt-16 mb-4">
+                            <label for="image">OBRÁZKOVÁ PRÍLOHA</label>
+                            <input type="file" id="image" name="image" class="form-control"/> <!--accept="image/*" /> -->
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary">PRIDAJ ČLÁNOK</button>
+
+                        <button type="submit" class="btn btn-dark btn-lg mx-auto d-block mt-4 mb-5">PRIDAJ ČLÁNOK</button>
                     </form>
                 </div>
             </div>
         </div>
     </article>
+
+
 </main>
+
 <div id="postContent" class="mt-6" style="display: none;"></div>
 
+
+
+
 </body>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 <script>
-    $(document).ready(function () {
-        // Handle form submission using AJAX
-        $('#createPostForm').submit(function (e) {
-            e.preventDefault(); // Prevent the default form submission
 
-            // Create a FormData object to handle file uploads
-            var formData = new FormData(this);
+//    import {post} from "axios";
 
-            // Make the AJAX request
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    // Hide the form
-                    $('#createPostForm').hide();
+    $('#createPostForm').submit(function (e) {
+        e.preventDefault(); // Prevent default form submission
 
-                    // Display the post content
-                    $('#postContent').html(response.post).show();
-                },
-                error: function (error) {
-                    console.error('Error creating post:', error);
-                    // Handle errors as needed
-                }
-            });
+        //databaza
+        let newPostbody = document.getElementById('body').value;
+        let newPostImage = document.getElementById('image').value;
+        let newPostExcerpt = document.getElementById('excerpt').value;
+        let newPostTitle = document.getElementById('title').value;
+//        let newPostSlug = Str::document.getElementById('title').value;
+
+        //        var form = $(this);
+//        var formData = new FormData(this); // Create FormData object for file upload
+
+        // Append CSRF token to the form data
+       // formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+        $.ajax( {
+
+            type: 'POST',
+            url:'/store' ,
+            data: //formData,
+            {
+                 body:newPostbody,
+                //user_id:
+                //category_id:
+                title:newPostTitle,
+                excerpt:newPostExcerpt,
+                body:newPostbody,
+                image:newPostImage
+            },
+            processData: false,
+            contentType: false,
+
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                // Hide the form
+                //$('.create-post-form').hide();
+                //  $('#postHead').hide();
+
+/*                    var post = data.post;
+
+
+                    // Update your UI to display the created post
+                    $('.post-title').text(post.title);
+                    $('.post-excerpt span').html(post.excerpt);
+                    $('.post-body').html(post.body);
+*/
+//  /$@{ }
+                   window.location.href = '/posts/' + newPostTitle;
+
+
+            },
+
+            error: function (error) {
+                console.error('Error creating post:', error);
+            }
         });
+
     });
 </script>
+
+
+<!--VYBER KATEGORIE -->
+<script>
+    function selectCategory(selectedCategoryId, selectedCategoryName) {
+        document.getElementById('selectedCategory').innerText = selectedCategoryName;
+        document.getElementById('selected_category_id').value = selectedCategoryId;
+    }
+</script>
+
 </html>
