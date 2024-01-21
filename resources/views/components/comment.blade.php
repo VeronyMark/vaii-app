@@ -9,7 +9,7 @@
         <header class="mb-2">
             <h3 class="font-weight-bold">{{ $comment->author->username }} </h3>
             <p class="text-muted">
-                <time>{{ $comment->created_at }}</time>
+                <time>{{ $comment->updated_at->diffForHumans() }}</time>
             </p>
         </header>
         <p>{{ $comment->body }}</p>
@@ -19,25 +19,26 @@
 </article>
 
 
+
 <!-- Modal UPDATE MODAL-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Update Post</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="exampleModalLabel">AKTUALIZUJ SVOJ KOMENTÁR</h5>
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="update_body">Body</label>
-                    <textarea class="form-control" id="update_body" name="body" rows="13"
+                    <label for="update_body">Text</label>
+                    <textarea class="form-control" id="update_body" name="body" rows="3"
                               required>{{ $comment->body }}</textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary update_comment" data-comment-id="{{ $comment->id }}">
-                    Update
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">ZRUŠ</button>
+                <button type="button" class="btn btn-success update_comment" data-comment-id="{{ $comment->id }}">
+                    AKTUALIZUJ
                 </button>
             </div>
 
@@ -125,11 +126,11 @@
         var postId = {{$comment->post_id}};
 
         $.ajax({
-                type: "GET",
-                url: "/posts/" + postId + "/details", // Adjust the route to fetch post details
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+            type: "GET",
+            url: "/posts/" + postId + "/details", // Adjust the route to fetch post details
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
 
             success: function (postDetails) {
 
@@ -157,9 +158,9 @@
                 });
             },
             error: function (error) {
-            console.error('Error fetching post details:', error);
-        }
-    });
+                console.error('Error fetching post details:', error);
+            }
+        });
     });
 
 </script>

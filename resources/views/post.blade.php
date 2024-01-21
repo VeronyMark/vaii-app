@@ -109,7 +109,16 @@
                 <strong> {{ session()->get('statusKomentOk') }}</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-
+        @elseif(session()->has('statusKomentUpdate'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong> {{ session()->get('statusKomentUpdate') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif(session()->has('statusPostUpdateOk'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong> {{ session()->get('statusPostUpdateOk') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @elseif(session()->has('statusKomentDelete'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong> {{ session()->get('statusKomentDelete') }}</strong>
@@ -117,46 +126,45 @@
             </div>
         @endif
 
+
+
+
+
         <button class="btn btn-dark btn-lg mx-auto d-block mt-4 mb-5"
                 onclick="window.location.href='{{ route("welcome") }}'">ZOBRAZ VŠETKY BLOGY
         </button>
         <h2 class="post-title" contenteditable="true" data-type="title">{{$post->title}}</h2>
 
 
-        <p style="color:grey ">{{$post->created_at->diffForHumans()}} <strong>{{$post->author->name}}</strong></p>
+        <p style="color:grey ">{{$post->updated_at->diffForHumans()}} <strong>{{$post->author->name}}</strong></p>
 
         <p style="color:grey "><a href="/categories/{{$post->category->slug}}"
                                   style="color: #2d3748">{{$post->category->name}} </a></p>
 
-        <div class="row">
-            <div class="col-md-6"> <!-- Adjust column size as needed -->
-                <form method="post" action="{{ route('post.delete', ['post' => $post]) }}">
-                    @csrf
-                    @method('delete')
+            <div class="row mt-6 mb-5">
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col"></div>
+
+                <div class="col mr-5">
+                    <form method="post" action="{{ route('post.delete', ['post' => $post]) }}">
+                        @csrf
+                        @method('delete')
+                        @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $post->user_id)
+                            <button type="submit" class="deleteComment btn btn-sm btn-outline-danger">Zmaž</button>
+                        @endif
+                    </form>
+                </div>
+                <div class="col ml-16">
                     @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $post->user_id)
-                        <button type="submit" class="deleteComment btn btn-sm btn-outline-danger">Zmaž</button>
+                        <button type="button" id="editBtn" class="btn btn-success editPost">Aktualizuj</button>
+                        <button id="saveChangesBtn" class="btn d-none mt-4" style="background-color: coral">Ulož zmeny</button>
                     @endif
-                </form>
-
-
+                </div>
             </div>
-            <div class="col-md-6">
-                @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $post->user_id)
 
-                    <button type="button" class="btn btn-primary editPost">edit</button>
-                @endif
-
-            </div>
-            <button id="saveChangesBtn" class="btn btn-success d-none">Save Changes</button>
-
-
-            <!--  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Update Post
-    </button>
--->
-
-        </div>
-        <div class="post-excerpt" style="word-wrap: break-word; max-width: 600px; padding: 10px;" contenteditable="true"
+        <div class="post-excerpt mt-16" style="word-wrap: break-word; max-width: 600px; padding: 10px;" contenteditable="true"
              data-type="excerpt">
             <span style="font-weight: bold;">{!! $post->excerpt !!}</span>
         </div>
@@ -174,16 +182,10 @@
             @endif
         </div>
 
-        <section class="col-md-8 offset-md-2 mt-5 mb-4">
+        <section class="col-md-8 offset-md-2 mt-16 mb-4">
             <form method="POST" action="/posts/{{ $post->slug}}/comments" class="bg-light border rounded p-4">
 
-
                 <header class="d-flex align-items-center">
-                    <!--    guest
-                            <img  src="https://i.pravatar.cc/60" alt="" width="40" height="40" class="rounded-circle mr-2">
-                        else
-                            <img src="https://i.pravatar.cc/60?u={ auth()->user()->id }}" alt="" width="40" height="40" class="rounded-circle mr-2">
-                        endguest -->
                     @guest
                         <h2 class="ml-2">Na pridanie komentáru je potrebné prihlásenie</h2>
                     @else
@@ -222,9 +224,9 @@
                                         data-comment-id="{{ $comment->id }}">
                                     Zmaž Komentár
                                 </button>
-                                <button type="button" class="editComments btn btn-sm btn-success me-2"
-                                        data-comment-id="{{ $comment->id }}">
-                                    Zmeň
+
+                                <button type="button" class="editComments btn btn-sm btn-success ml-4 me-2"
+                                        data-comment-id="{{ $comment->id }}">Zmeň
                                 </button>
                             </div>
 
@@ -273,19 +275,21 @@
     $(document).ready(function () {
         // Event handler for the "Edit" button
         $(document).on('click', '.editPost', function (e) {
-            // You may want to add the logic to open the edit modal here
-            console.log('Edit button clicked');
 
             // Highlight the editable elements
             $('[contenteditable="true"]').addClass('editable');
 
             // Show the Save Changes button
             $('#saveChangesBtn').removeClass('d-none');
+            $('#editBtn').hide();
+
         });
 
         // Event handler for the "Save Changes" button
         $(document).on('click', '#saveChangesBtn', function (e) {
             var postId = {{$post->id}};
+            var postSlug = {{$post->slug}};
+
             var data = {};
 
             // Loop through editable elements and collect updated content
@@ -315,6 +319,8 @@
                 },
                 success: function (response) {
                     // You can handle the success response if needed
+                    window.location.href = "/posts/" + postSlug;
+
                     console.log('Post updated successfully');
                 },
                 error: function (error) {
@@ -324,6 +330,8 @@
 
             // Hide the Save Changes button
             $('#saveChangesBtn').addClass('d-none');
+            $('#editBtn').show();
+
         });
 
     });

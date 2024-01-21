@@ -240,10 +240,8 @@ function update(Request $request, $id)
         // Update other attributes as needed
     ]);
 
-    // return redirect()->route('welcome');
+    $request->session()->flash('statusPostUpdateOk', 'Príspevok bol úspešne aktualizovaný!');
 
-
-    // You can return a JSON response if needed
     return response()->json(['message' => 'Post updated successfully']);
 
 }
