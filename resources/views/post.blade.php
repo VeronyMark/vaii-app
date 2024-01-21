@@ -8,16 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
     <!-- Bootstrap CSS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
     <!-- Bootstrap Icons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('Images/modrotlac.jpg') }}" type="image/jpeg">
 
@@ -57,8 +53,7 @@
                                     <li>
                                         <form method="get" action="/create" class="font-bold">
                                             @csrf
-                                            <button type="submit" class="btn btn-danger dropdown-item">Pridaj
-                                                príspevok
+                                            <button type="submit" class="btn btn-danger dropdown-item">Pridaj príspevok
                                             </button>
                                         </form>
                                     </li>
@@ -138,30 +133,34 @@
         <p style="color:grey "><a href="/categories/{{$post->category->slug}}"
                                   style="color: #2d3748">{{$post->category->name}} </a></p>
 
-            <div class="row mt-6 mb-5">
-                <div class="col"></div>
-                <div class="col"></div>
-                <div class="col"></div>
-                <div class="col"></div>
+        <div class="row mt-6 mb-5">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
 
-                <div class="col mr-5">
-                    <form method="post" action="{{ route('post.delete', ['post' => $post]) }}">
-                        @csrf
-                        @method('delete')
-                        @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $post->user_id)
-                            <button type="submit" class="deleteComment btn btn-sm btn-outline-danger">Zmaž</button>
-                        @endif
-                    </form>
-                </div>
-                <div class="col ml-16">
+            <div class="col mr-5">
+                <form method="post" action="{{ route('post.delete', ['post' => $post]) }}">
+                    @csrf
+                    @method('delete')
                     @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $post->user_id)
-                        <button type="button" id="editBtn" class="btn btn-success editPost">Aktualizuj</button>
-                        <button id="saveChangesBtn" class="btn d-none mt-4" style="background-color: coral">Ulož zmeny</button>
+                        <button type="submit" id="zmazPostBtn" class="deleteComment btn btn-sm btn-outline-danger">
+                            Zmaž
+                        </button>
                     @endif
-                </div>
+                </form>
             </div>
+            <div class="col ml-16">
+                @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $post->user_id)
+                    <button type="button" id="editBtn" class="btn btn-success editPost">Aktualizuj</button>
+                    <button id="saveChangesBtn" class="btn d-none mt-4" style="background-color: coral">Ulož zmeny
+                    </button>
+                @endif
+            </div>
+        </div>
 
-        <div class="post-excerpt mt-16" style="word-wrap: break-word; max-width: 600px; padding: 10px;" contenteditable="true"
+        <div class="post-excerpt mt-16" style="word-wrap: break-word; max-width: 600px; padding: 10px;"
+             contenteditable="true"
              data-type="excerpt">
             <span style="font-weight: bold;">{!! $post->excerpt !!}</span>
         </div>
@@ -197,10 +196,10 @@
                                   readonly placeholder="Napíš nám svoj názor"></textarea>
                     @else
                         <textarea name="body" class="form-control" rows="4"
-                                  placeholder="Napíš nám svoj názor" id="body"  required>
+                                  placeholder="Napíš nám svoj názor" id="body" required>
 
                         </textarea>
-                        <x-input-error :messages="$errors ->get('body')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('body')" class="mt-2"/>
                     @endguest
 
                 </div>
@@ -222,14 +221,14 @@
                             <div class="d-flex">
                                 <button
                                     type="button" class="deleteKoment btn btn-sm btn-outline-danger"
-                                        data-comment-id="{{ $comment->id }}" >
+                                    data-comment-id="{{ $comment->id }}">
                                     Zmaž Komentár
                                 </button>
 
                                 <button
 
                                     type="button" class="editComments btn btn-sm btn-success ml-4 me-2"
-                                        data-comment-id="{{ $comment->id }}">Zmeň
+                                    data-comment-id="{{ $comment->id }}">Zmeň
                                 </button>
                             </div>
 
@@ -271,17 +270,17 @@
     </footer>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.all.min.js"></script>
 
 <script>
     $(document).ready(function () {
         $(document).on('click', '.editPost', function (e) {
 
-            // Highlight the editable elements
             $('[contenteditable="true"]').addClass('editable');
 
-            // Show the Save Changes button
             $('#saveChangesBtn').removeClass('d-none');
             $('#editBtn').hide();
+            $('#zmazPostBtn').hide();
 
         });
 
@@ -289,8 +288,6 @@
         $(document).on('click', '#saveChangesBtn', function (e) {
 
             var postId = {{$post->id}};
-         //   var postSlug = {{$post->slug}};
-
             var data = {};
 
             // Loop through editable elements and collect updated content
@@ -305,11 +302,9 @@
                     data['body'] = $(this).text();
                 }
 
-                // Remove the editable class
                 $(this).removeClass('editable');
             });
 
-            // Send AJAX request to update the content
             $.ajax({
                 type: "PUT",
                 url: "/update-post/" + postId,
@@ -319,36 +314,41 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    // You can handle the success response if needed
-                    window.location.href = "/posts/" + postId; //; + /"postSlug;
-
-                    console.log('Post updated successfully');
+                    window.location.href = "/posts/" + postId;
+                    $('#saveChangesBtn').addClass('d-none');
+                    $('#editBtn').show();
                 },
                 error: function (error) {
-                    console.error('Error updating post:', error);
+
+                        if (error.responseJSON && error.responseJSON.message) {
+                            showStyledAlert(error.responseJSON.message);
+                        } else {
+                            console.error('Unexpected error structure:', error);
+                            alert('Error creating post. Please try again.');
+                        }
+
+
                 }
             });
 
-            // Hide the Save Changes button
-            $('#saveChangesBtn').addClass('d-none');
-            $('#editBtn').show();
+
 
         });
 
+        function showStyledAlert(text) {
+            Swal.fire({
+                icon: 'error',
+                text: text,
+                showConfirmButton: false,
+                timer: 3000,
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer && redirectUrl) {
+                    window.location.href = redirectUrl;
+                }
+            });
+        }
     });
 
-
-/*
-    function showAlert() {
-        var myAlert = document.getElementById('myAlert');
-        myAlert.classList.add('show', 'fade');
-
-        // Optionally, you can hide the alert after a delay
-        setTimeout(function() {
-            myAlert.classList.remove('show');
-        }, 10000); // Hide after 3 seconds (adjust as needed)
-    }
-*/
 
 
 </script>

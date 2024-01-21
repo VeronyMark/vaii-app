@@ -14,30 +14,25 @@
     <!-- Bootstrap Icons CSS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
- <!--   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
--->
+    <!--   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+   -->
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('Images/modrotlac.jpg') }}" type="image/jpeg">
 
-   <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            crossorigin="anonymous"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+             integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+             crossorigin="anonymous"></script>
+             crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
-
     <!-- Alpine.js
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-min.js" defer></script>-->
-
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-
- <!--   <script src="{ asset('js/odosliFormularAJAX.js') }}"></script> -->
-
+    <!--   <script src="{ asset('js/odosliFormularAJAX.js') }}"></script> -->
 
 
 </head>
@@ -47,7 +42,9 @@
 </div>
 
 <main class="container mt-6">
-    @include('flash-message')
+
+
+
 
     <button class="btn btn-dark btn-lg mx-auto d-block mt-4 mb-5"
             onclick="window.location.href='{{ route("welcome") }}'">ZOBRAZ VŠETKY BLOGY
@@ -58,27 +55,27 @@
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-10 col-md-8 col-lg-6">
                     <h3>PRIDAJ ČLÁNOK</h3>
-
-                 <!--   <form id="createPostForm" method="POST" action="{ route('store') }}"-->
-
                     <form  id="createPostForm" method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group mt-4">
 
+                        <!-- NADPIS -->
+                        <div class="form-group mt-4">
                             <label for="title">NÁDPIS</label>
                             <input type="text" class="form-control" id="title"
-                                   name="title" required>
-
-                         <!--   <span style="color: red">error('title'){ $message }} enderror </span>
--->
+                                   name="title" required :value="old('title')">
+                            <x-input-error :messages="$errors->get('title')" class="mt-2"/>
                         </div>
 
 
                         <div class="form-group mt-4">
                             <label for="category_id" name="category_id">KATEGÓRIA</label>
-                            <!-- Change the input type to text to show the selected category -->
-                            <input type="text" class="form-control" id="selected_category_id" name="category_id"
+
+                            <input type="text" class="form-control" id="category_id" name="category_id"
                                    readonly required>
+                            <!--      <input type="text" class="form-control" id="selected_category_id" name="category_id"
+                                   readonly required>
+                            -->
+
                             <div class="btn-group dropright">
                                 <button type="button" class="btn btn-secondary dropdown-toggle mt-2"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -99,26 +96,29 @@
 
                         </div>
 
-
+                        <!-- UKAZKA -->
                         <div class="form-group mt-4">
                             <label for="excerpt">UKÁŽKA</label>
                             <textarea class="form-control" id="excerpt" name="excerpt" rows="7" required></textarea>
+                            <x-input-error :messages="$errors->get('excerpt')" class="mt-2"/>
                         </div>
 
 
+                        <!-- CLANOK -BODY -->
                         <div class="form-group mt-4">
                             <label for="body">ČLÁNOK</label>
-                            <textarea class="form-control" id="body" name="body" rows="40" required></textarea>
+                            <textarea class="form-control" id="body" name="body" rows="25" required></textarea>
+                            <x-input-error :messages="$errors->get('body')" class="mt-2"/>
                         </div>
 
                         <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
 
+                        <!-- OBRAZOK -->
                         <div class="form-group mt-16 mb-4">
                             <label for="image">OBRÁZKOVÁ PRÍLOHA</label>
-                            <input type="file" id="image" name="image" class="form-control"/> <!--accept="image/*" /> -->
+                            <input type="file" id="image" name="image" class="form-control"/>
 
                         </div>
-
 
                         <button type="submit" class="btn btn-dark btn-lg mx-auto d-block mt-4 mb-5">PRIDAJ ČLÁNOK</button>
                     </form>
@@ -136,6 +136,7 @@
 
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.all.min.js"></script>
 
 <script>
 
@@ -163,25 +164,49 @@
                     $('.post-excerpt span').html(post.excerpt);
                     $('.post-body').html(post.body);
 
-                    // Additional UI update or redirection if needed
-                    //                    window.location.href = '/posts/' + post.slug;
-
                     window.location.href = '/posts';
                 },
                 error: function (error) {
-                    // Handle error
-                    console.error('Error submitting form:', error);
+
+                    if (error.responseJSON && error.responseJSON.message) {
+                        showStyledAlert(error.responseJSON.message);
+                    } else {
+                        console.error('Unexpected error structure:', error);
+                        alert('Error creating post. Please try again.');
+                    }
+
                 }
             });
         });
+        function showStyledAlert(text) {
+            Swal.fire({
+                icon: 'error',
+                text: text,
+                showConfirmButton: false,
+                timer: 3000,
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer && redirectUrl) {
+                    window.location.href = redirectUrl;
+                }
+            });
+        }
+
+
     });
 </script>
 <!--VYBER KATEGORIE -->
 <script>
+    /*
     function selectCategory(selectedCategoryId, selectedCategoryName) {
         document.getElementById('selectedCategory').innerText = selectedCategoryName;
         document.getElementById('selected_category_id').value = selectedCategoryId;
     }
+*/
+    function selectCategory(selectedCategoryId, selectedCategoryName) {
+        document.getElementById('selectedCategory').innerText = selectedCategoryName;
+        document.getElementById('category_id').value = selectedCategoryId;
+    }
+
 
 </script>
 

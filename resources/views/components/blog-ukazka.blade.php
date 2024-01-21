@@ -2,25 +2,10 @@
 @props(['post'])
 
 <div class="col-md-8">
-    <!--background-image: url('{ asset('storage/' . $post->image_path) }}') --->
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm"
-         style="height: 250px;  background-image: url('{{asset('images/'.$post->image)  }}')
-         ;background-size: cover; position: relative;"
-    >
-       <!--
-        <img src="{{ asset('images/1705272226.png') }}">
-        <img src="{{ asset('images/'.$post->image)}}">
-
-
-
-            <img src="{{ asset('storage/imges/1BsZYecFBvS3Ni8ehxUhC3C0F8TLi0gENoEFyABu.jpg' ) }}" alt="{{ $post->title }}">
-            <img url="{{ asset('storage/app/public/post/17D19lRvwJB8vcLkQBoiyybpX50uIXPXsJUlbWu5.jpg' ) }}" alt="ni">
-
-            <img src="{{ asset($post->image_path) }}" alt="{{ $post->title }}">
-
-        <img src="{{ asset('storage/'.$post->image) }}" alt="postik">
--->
-
+         style="height: 250px;
+         background-image:  url('{{ $post->image ? asset('images/'.$post->image) : asset('Images/modrotlac.jpg') }}');
+         background-size: cover; position: relative;">
 
         <div class="col-md-6 d-flex flex-column  position-static p-4"
              style="background: rgba(255, 255, 255, 0.85);">

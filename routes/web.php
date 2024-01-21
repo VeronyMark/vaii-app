@@ -45,42 +45,17 @@ Route::get('/posts', [PostController::class, 'index'])->name('welcome');
 //ZOBRAZENIE KONKRETNEHO POSTU
 Route::get('posts/{post:id}', [PostController::class, 'show'])->name('posts.show');
 
-//Route::get('posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
-
-
-
 //ZOBRAZENIE INFORMACII O POSTE
 Route::get('/posts/{post}/details', [PostController::class,'getPostDetails'])->name('posts.details');
 
-//POSTY
 
+//POSTY
 Route::get('/create', [PostController::class, 'create'])->name('create');
 Route::post('/store', [PostController::class, 'store'])->name('store');
 
 Route::delete('posts/{post:slug}/destroy', [PostController::class, 'destroy'])->name('post.delete');
-//Route::put('/update-post/{post}', [PostController::class, 'update'])->name('post.update');
-//Route::put('/update-post/{post}', [PostController::class, 'updatePost'])->name('post.update');
-
 Route::get('/edit-post/{post}', [PostController::class, 'editPost'])->name('post.edit');
-
-
-//Route::get('/edit-post/{id}', [PostController::class , 'edit']);
-
 Route::put('/update-post/{id}', [PostController::class, 'update']);
-
-
-//Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('post.edit');
-//Route::put('/posts/{post}', [PostController::class, 'update'])->name('post.update');
-
-//route for creating post
-//Route::get('/create', PostController::class . '@create')->name('create');
-// adds a post to the database
-//Route::post('/posts', PostController::class , 'store')->name('store');
-//Route::post('/create', [PostController::class, 'create'])->name('create');
-//Route::get('/create', [PostController::class, 'create'])->name('create');
-
-//Route::post('/create', [PostController::class, 'store']); // Add this line for the POST request
-
 
 
 
@@ -100,8 +75,6 @@ Route::get('categories/{category:slug}', function (Category $category) {
 
     return view('blogPage', ['posts' => $posts,  'categories' => $categories]);
 });
-
-
 
 
 
