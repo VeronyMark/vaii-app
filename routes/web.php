@@ -6,19 +6,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 
-use App\Http\Controllers\LikeController;
-
 use App\Models\Post;
 use App\Models\Category;
-use App\Models\User;
 use App\Http\Controllers\ConsoleController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
-use App\Http\Controllers\TaskController;
-use Illuminate\Support\Facades\Auth;
 
-
-use App\Models\Comment;
 
 /*
 |--------------------------------------------------------------------------

@@ -319,15 +319,14 @@
                 },
                 error: function (error) {
 
-                        if (error.responseJSON && error.responseJSON.message) {
-                            showStyledAlert(error.responseJSON.message);
-                        } else {
-                            console.error('Unexpected error structure:', error);
-                            alert('Error creating post. Please try again.');
-                        }
+                    if (error.responseJSON && error.responseJSON.message) {
+                        showStyledAlert(error.responseJSON.message);
+                    } else {
+                        console.error('Unexpected error structure:', error);
+                        alert('Error creating post. Please try again.');
+                    }
                 }
             });
-
 
 
         });
@@ -345,7 +344,6 @@
             });
         }
     });
-
 
 
 </script>

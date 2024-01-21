@@ -1,4 +1,6 @@
 <x-layout>
+    <div class="mx-auto" style="max-width: 400px;">
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -57,4 +59,5 @@
             </x-primary-button>
         </div>
     </form>
+    </div>
 </x-layout>

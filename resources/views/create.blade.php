@@ -14,36 +14,31 @@
     <!-- Bootstrap Icons CSS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <!--   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-   -->
-
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('Images/modrotlac.jpg') }}" type="image/jpeg">
 
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-             integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-             crossorigin="anonymous"></script>
-             crossorigin="anonymous"></script> -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
-    <!-- Alpine.js
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-min.js" defer></script>-->
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!--   <script src="{ asset('js/odosliFormularAJAX.js') }}"></script> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.all.min.js"></script>
+
+    <script src="{{ asset('js/obsluhaCreate.js') }}"></script>
 
 
 </head>
 <body>
 
-<div id="postHead"> <x-vrch/>
+<div id="postHead">
+    <x-vrch/>
 </div>
 
 <main class="container mt-6">
-
-
 
 
     <button class="btn btn-dark btn-lg mx-auto d-block mt-4 mb-5"
@@ -55,7 +50,7 @@
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-10 col-md-8 col-lg-6">
                     <h3>PRIDAJ ČLÁNOK</h3>
-                    <form  id="createPostForm" method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
+                    <form id="createPostForm" method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <!-- NADPIS -->
@@ -72,9 +67,6 @@
 
                             <input type="text" class="form-control" id="category_id" name="category_id"
                                    readonly required>
-                            <!--      <input type="text" class="form-control" id="selected_category_id" name="category_id"
-                                   readonly required>
-                            -->
 
                             <div class="btn-group dropright">
                                 <button type="button" class="btn btn-secondary dropdown-toggle mt-2"
@@ -130,80 +122,6 @@
 
 </main>
 
-<div id="postContent" class="mt-6" style="display: none;"></div>
-
-
-
-
 </body>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.all.min.js"></script>
-
-<script>
-
-    $(document).ready(function () {
-        // Event handler for form submission using AJAX
-        $('#createPostForm').submit(function (e) {
-            e.preventDefault(); // Prevent default form submission
-
-            var form = $(this);
-            var formData = new FormData(form[0]); // Create FormData object for file upload
-
-            // Append CSRF token to the form data
-            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
-
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    var post = data.post;
-
-                    $('.post-title').text(post.title);
-                    $('.post-excerpt span').html(post.excerpt);
-                    $('.post-body').html(post.body);
-
-                    window.location.href = '/posts';
-                },
-                error: function (error) {
-
-                    if (error.responseJSON && error.responseJSON.message) {
-                        showError(error.responseJSON.message);
-                    } else {
-                        console.error('Unexpected error structure:', error);
-                        alert('Error creating post. Please try again.');
-                    }
-
-                }
-            });
-        });
-        function showError(text) {
-            Swal.fire({
-                icon: 'error',
-                text: text,
-                showConfirmButton: true,
-                timer: 3000,
-            });
-        }
-
-
-    });
-</script>
-<!--VYBER KATEGORIE -->
-<script>
-    /*
-    function selectCategory(selectedCategoryId, selectedCategoryName) {
-        document.getElementById('selectedCategory').innerText = selectedCategoryName;
-        document.getElementById('selected_category_id').value = selectedCategoryId;
-    }
-*/
-    function selectCategory(selectedCategoryId, selectedCategoryName) {
-        document.getElementById('selectedCategory').innerText = selectedCategoryName;
-        document.getElementById('category_id').value = selectedCategoryId;
-    }
-
-
-</script>
 
 </html>

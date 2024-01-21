@@ -52,7 +52,7 @@ class PostController extends Controller
                 'category_id' => ['required'],
                 'excerpt' => ['required', 'max:150'],
                 'body' => ['required', 'max:1000', 'string'],
-                'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
+
 
             ], [
                 'title.required' => 'Chýbajúci nádpis',
@@ -62,9 +62,7 @@ class PostController extends Controller
                 'category_id.required' => 'Chýbajúca kategória',
                 'excerpt.required' => 'Chýbajúca ukážka článku',
                 'excerpt.max' => 'Ukážka je príliš dlhá',
-                'image.image' => 'Príloha  must be an image',
-                'image.mimes' => 'Príloha nie je v správnom formát (jpeg, png, jpg, gif, svg)',
-                'image.max' => 'Príloha musí byť menšej veľkosti',
+
             ]);
 
             $post = Post::create([

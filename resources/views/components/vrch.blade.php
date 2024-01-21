@@ -37,7 +37,6 @@
                                             </button>
                                         </form>
                                     </li>
-                                    <li><a class="dropdown-item" href="#">Informácie o profile</a></li>
                                     <li>
                                         <form method="POST" action="/logout" class="font-bold">
                                             @csrf
