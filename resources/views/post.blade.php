@@ -7,7 +7,11 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
     <!-- Bootstrap CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
@@ -26,7 +30,6 @@
     <header class="blog-header py-5 position-sticky ">
 
         <div class="row">
-            <!--        <div id="headerSubPages">   -->
             <div class="col-lg-4"></div>
 
             <div class="col-lg-4 text-center ">
@@ -214,9 +217,17 @@
                     <div class="card-body">
                         <x-comment :comment="$comment"/>
                         @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
-                            <button type="button" class="deleteKoment btn btn-sm btn-outline-danger" data-comment-id="{{ $comment->id }}">
-                                Zmaž Komentár
-                            </button>
+                            <div class="d-flex">
+                                <button type="button" class="deleteKoment btn btn-sm btn-outline-danger"
+                                        data-comment-id="{{ $comment->id }}">
+                                    Zmaž Komentár
+                                </button>
+                                <button type="button" class="editComments btn btn-sm btn-success me-2"
+                                        data-comment-id="{{ $comment->id }}">
+                                    Zmeň
+                                </button>
+                            </div>
+
                         @endif
                     </div>
                 </div>
@@ -236,10 +247,11 @@
             <div class="row justify-content-center">
                 <div class="col-8 p-md-5 mb-5 mt-5  text-black rounded  bg-white">
 
-                    <p class="lead my-3 fst-italic" style="font-size: 24px; "> TEŠÍME SA NA KAŽDÝ PRÍBEH, KTORÝ S NAMI ZDIEĽAŠ </p>
+                    <p class="lead my-3 fst-italic" style="font-size: 24px; "> TEŠÍME SA NA KAŽDÝ PRÍBEH, KTORÝ S NAMI
+                        ZDIEĽAŠ </p>
 
 
-                        @auth
+                    @auth
                         <form method="get" action="/create" class="font-bold">
                             @csrf
                             <button type="submit" class="btn btn-secondary mb-4">Pridaj príspevok</button>
@@ -255,7 +267,6 @@
 </main>
 
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <!-- Add a Save Changes button -->
 
 <script>

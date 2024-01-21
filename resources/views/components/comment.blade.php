@@ -1,4 +1,3 @@
-
 <article class="d-flex bg-light  rounded p-4 mb-4">
     <!-- <div class="flex-shrink-0 mr-4">
          !--
@@ -15,54 +14,11 @@
         </header>
         <p>{{ $comment->body }}</p>
 
-
-        <!--        <div class="d-flex">
-            <form method="post" action="{ route('comments.edit', ['comment' => $comment]) }}" class="me-2" >
-                csrf
-                method('get')
-                if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
-                    <button type="submit" class="editComments btn btn-sm btn-success">Zmeň</button>
-                endif
-            </form> -->
-        @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
-
-            <div class="d-flex">
-
-                <button type="button" class="editComments btn btn-sm btn-success me-2"
-                        data-comment-id="{{ $comment->id }}">
-                    Zmeň
-                </button>
-
-
-
-
-
-               <!-- <form method="post" action="{ route('comments.delete', ['comment' => $comment]) }}" class="mt-4">
--->
-                   <!-- csrf
-                   // method('delete') -->
-
-                    <!--if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
-                        <button type="button" class=" deleteKoment btn btn-sm btn-outline-danger "  >Zmaž Komentár</button>
-                    endif -->
-               <!-- </form> -->
-            </div>
-        @endif
-
-        <!--
-        <form method="post" action="{ route('comments.delete', ['comment' => $comment]) }}" class="mt-4">
-            csrf
-            method('delete')
-
-            if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::id() == $comment->user_id)
-                <button type="submit" class="deleteComment btn btn-sm btn-outline-danger">Zmaž</button>
-            endif
-        </form>
-        -->
     </div>
 
-
 </article>
+
+
 <!-- Modal UPDATE MODAL-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -72,10 +28,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
-
-
-
                 <div class="form-group">
                     <label for="update_body">Body</label>
                     <textarea class="form-control" id="update_body" name="body" rows="13"
@@ -84,25 +36,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary update_comment">Update</button>
+                <button type="button" class="btn btn-primary update_comment" data-comment-id="{{ $comment->id }}">
+                    Update
+                </button>
             </div>
+
+
         </div>
     </div>
 </div>
 <!-- POSTMODAL END-->
+
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 <script>
     $(document).on('click', '.deleteKoment', function (e) {
         e.preventDefault();
-        console.log("uspech");
-
         var commentId = $(this).data('comment-id');
-
-//        var commentId = {{$comment->id}};
         var postId = {{$comment->post_id}};
 
-        console.log(commentId);
-        // Fetch post details including the slug
         $.ajax({
             type: "GET",
             url: "/posts/" + postId + "/details", // Adjust the route to fetch post details
@@ -110,10 +63,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (postDetails) {
-                // Once you have post details, including the slug, you can use it
-                console.log("Post Slug:", postDetails.slug);
-
-                // Now, you can proceed with the comment deletion
                 $.ajax({
                     type: "DELETE",
                     url: "/comments/" + commentId,
@@ -139,73 +88,79 @@
         });
     });
 
+    //NAJSKOR EDIT
+    $(document).on('click', '.editComments', function (e) {
+        e.preventDefault();
+        console.log('Edit button clicked'); // Check if this log appears in the console
+
+        var commentId = $(this).data('comment-id'); //{$comment->id}};
+
+        $('#exampleModal').modal('show');
+
+        $.ajax({
+            type: "GET",
+            url: "/edit-comment/" + commentId,
+
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+            },
+            error: function (error) {
+                console.error('Error updating post:', error);
+            }
+        });
+    });
+
+
     $(document).on('click', '.update_comment', function (e) {
         e.preventDefault();
-        //var post_id = $(this).val();
-        //console.log(post_id);
-        var commentId = {{$comment->id}};
+
+        var commentId = $(this).data('comment-id');
 
         var data = {
-
-            'body' : $('#update_body').val(),
+            'body': $('#update_body').val(),
         };
 
+        var postId = {{$comment->post_id}};
 
         $.ajax({
-            type:"PUT",
-            url:"/update-comment/"+commentId,
-            data: data,
-            dataType: "json",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
+                type: "GET",
+                url: "/posts/" + postId + "/details", // Adjust the route to fetch post details
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
 
-            success: function (response) {
-                $('#exampleModal').modal('hide');
+            success: function (postDetails) {
 
-                $('.comment-body').html(data.body);
+                $.ajax({
+                    type: "PUT",
+                    url: "/update-comment/" + commentId,
+                    data: data,
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
 
+                        $('#exampleModal').modal('hide');
 
-            },
-            error: function (error) {
-                console.error('Error updating post:', error);
-            }
+                        $('.comment-body').html(data.body);
 
-
-
-        });
-    });
-
-    $(document).on('click', '.editComments', function (e) {
-        $('#exampleModal').modal('show');
-        e.preventDefault();
-
-        var commentId = {{$comment->id}};
+                        window.location.href = "/posts/" + postDetails.slug;
 
 
-
-        $.ajax({
-            type:"GET",
-            url:"/edit-comment/"+commentId,
-
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-
-            success: function (response) {
+                    },
+                    error: function (error) {
+                        console.error('Error updating post:', error);
+                    }
+                });
             },
             error: function (error) {
-                console.error('Error updating post:', error);
-            }
-
-
-
-        });
+            console.error('Error fetching post details:', error);
+        }
     });
-
-
-
-
+    });
 
 </script>
 
