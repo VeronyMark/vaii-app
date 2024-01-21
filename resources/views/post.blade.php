@@ -285,10 +285,11 @@
 
         });
 
-        // Event handler for the "Save Changes" button
+
         $(document).on('click', '#saveChangesBtn', function (e) {
+
             var postId = {{$post->id}};
-            var postSlug = {{$post->slug}};
+         //   var postSlug = {{$post->slug}};
 
             var data = {};
 
@@ -319,7 +320,7 @@
                 },
                 success: function (response) {
                     // You can handle the success response if needed
-                    window.location.href = "/posts/" + postSlug;
+                    window.location.href = "/posts/" + postId; //; + /"postSlug;
 
                     console.log('Post updated successfully');
                 },

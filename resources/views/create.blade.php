@@ -6,18 +6,25 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!-- Bootstrap Icons CSS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+ <!--   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+-->
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('Images/modrotlac.jpg') }}" type="image/jpeg">
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+   <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
             integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
@@ -52,9 +59,9 @@
                 <div class="col-10 col-md-8 col-lg-6">
                     <h3>PRIDAJ ČLÁNOK</h3>
 
-                    <!--                        <form  method="POST" action="{ route('store') }}" -->
-                    <form id="createPostForm" method="POST" action="{{ route('store') }}"
-                          enctype="multipart/form-data">
+                 <!--   <form id="createPostForm" method="POST" action="{ route('store') }}"-->
+
+                    <form  id="createPostForm" method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group mt-4">
 
@@ -132,78 +139,50 @@
 
 <script>
 
-//    import {post} from "axios";
+    $(document).ready(function () {
+        // Event handler for form submission using AJAX
+        $('#createPostForm').submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
 
-    $('#createPostForm').submit(function (e) {
-        e.preventDefault(); // Prevent default form submission
+            var form = $(this);
+            var formData = new FormData(form[0]); // Create FormData object for file upload
 
-        //databaza
-        let newPostbody = document.getElementById('body').value;
-        let newPostImage = document.getElementById('image').value;
-        let newPostExcerpt = document.getElementById('excerpt').value;
-        let newPostTitle = document.getElementById('title').value;
-//        let newPostSlug = Str::document.getElementById('title').value;
+            // Append CSRF token to the form data
+            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
 
-        //        var form = $(this);
-//        var formData = new FormData(this); // Create FormData object for file upload
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    var post = data.post;
 
-        // Append CSRF token to the form data
-       // formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
-
-        $.ajax( {
-
-            type: 'POST',
-            url:'/store' ,
-            data: //formData,
-            {
-                 body:newPostbody,
-                //user_id:
-                //category_id:
-                title:newPostTitle,
-                excerpt:newPostExcerpt,
-                body:newPostbody,
-                image:newPostImage
-            },
-            processData: false,
-            contentType: false,
-
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (data) {
-                // Hide the form
-                //$('.create-post-form').hide();
-                //  $('#postHead').hide();
-
-/*                    var post = data.post;
-
-
-                    // Update your UI to display the created post
                     $('.post-title').text(post.title);
                     $('.post-excerpt span').html(post.excerpt);
                     $('.post-body').html(post.body);
-*/
-//  /$@{ }
-                   window.location.href = '/posts/' + newPostTitle;
 
+                    // Additional UI update or redirection if needed
+                    //                    window.location.href = '/posts/' + post.slug;
 
-            },
-
-            error: function (error) {
-                console.error('Error creating post:', error);
-            }
+                    window.location.href = '/posts';
+                },
+                error: function (error) {
+                    // Handle error
+                    console.error('Error submitting form:', error);
+                }
+            });
         });
-
     });
 </script>
-
-
 <!--VYBER KATEGORIE -->
 <script>
     function selectCategory(selectedCategoryId, selectedCategoryName) {
         document.getElementById('selectedCategory').innerText = selectedCategoryName;
         document.getElementById('selected_category_id').value = selectedCategoryId;
     }
+
 </script>
 
 </html>

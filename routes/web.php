@@ -43,7 +43,11 @@ Route::get('/', function () {
 Route::get('/posts', [PostController::class, 'index'])->name('welcome');
 
 //ZOBRAZENIE KONKRETNEHO POSTU
-Route::get('posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+Route::get('posts/{post:id}', [PostController::class, 'show'])->name('posts.show');
+
+//Route::get('posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+
+
 
 //ZOBRAZENIE INFORMACII O POSTE
 Route::get('/posts/{post}/details', [PostController::class,'getPostDetails'])->name('posts.details');
@@ -54,14 +58,15 @@ Route::get('/create', [PostController::class, 'create'])->name('create');
 Route::post('/store', [PostController::class, 'store'])->name('store');
 
 Route::delete('posts/{post:slug}/destroy', [PostController::class, 'destroy'])->name('post.delete');
-Route::put('/update-post/{post}', [PostController::class, 'update'])->name('post.update');
+//Route::put('/update-post/{post}', [PostController::class, 'update'])->name('post.update');
 //Route::put('/update-post/{post}', [PostController::class, 'updatePost'])->name('post.update');
 
 Route::get('/edit-post/{post}', [PostController::class, 'editPost'])->name('post.edit');
 
 
 //Route::get('/edit-post/{id}', [PostController::class , 'edit']);
-//Route::put('/update-post/{id}', [PostController::class, 'update']);
+
+Route::put('/update-post/{id}', [PostController::class, 'update']);
 
 
 //Route::get('/posts/{post}/edit', PostController::class .'@edit')->name('post.edit');

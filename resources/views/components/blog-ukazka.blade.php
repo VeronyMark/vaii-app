@@ -31,7 +31,7 @@
             <h3 class="fw-bold" style="font-size: 18px;">{{$post->title}}</h3>
             <p style="font-size: 16px;">  {{$post->excerpt}}
             </p>
-            <a href="/posts/{{$post->slug}}">Pokračuj v čítaní</a>
+            <a href="/posts/{{$post->id}}">Pokračuj v čítaní</a>
         </div>
     </div>
 </div>

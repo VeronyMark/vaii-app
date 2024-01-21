@@ -51,58 +51,45 @@ class PostController extends Controller
 
 
 
-    public function store(Request $request)
-    {
+    public function store(Request $request):JsonResponse {
 
-        //try {
-        /*
-                    request ->validate([
-                              'title' => ['required', 'string', 'max:255', Rule::unique('posts', 'title')],
-                              'body' => ['required', 'string', 'max:500'],
-                              'category_id' => ['required'],
-                              'excerpt' => ['required', 'string', 'max:255'],
-                              'image' => [ 'string', 'image'],
+        try {
+            //$validatedData = $request->validated();
 
-                    ]);
-                    $validatedData = $request->validated();
-                    */
 
-        $imageName = null;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
+            $imageName = null;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
+            }
+
+            // TODO OVERENIE SQL INJECTION -> KONTROLA SPECIAL ZNAKOV
+
+
+            $post = Post::create([
+                'user_id' => $request->user()->id,
+                'category_id' => $request->input('category_id'),
+                'slug' => Str::slug($request->input('title')),
+                'title' => $request->input('title'),
+                'excerpt' => $request->input('excerpt'),
+                'body' => $request->input('body'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'published_at' => now(),
+                'image' => $imageName,
+            ]);
+
+
+            $createdPost = Post::with(['author', 'category'])->find($post->id);
+
+            // Return the post content as HTML
+            $postHtml = view('post', ['post' => $createdPost])->render();
+
+            return response()->json(['message' => 'Post created successfully', 'post' => $postHtml], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error creating post', 'message' => $e->getMessage()], 500);
         }
-
-        // TODO OVERENIE SQL INJECTION -> KONTROLA SPECIAL ZNAKOV
-
-
-        //$post =
-            Post::create([
-            'user_id' =>Auth()->id(), // $request->user()->id,
-            'category_id' => $request->input('category_id'),
-            'slug' => Str::slug($request->input('title')),
-            'title' => $request->input('title'),
-            'excerpt' => $request->input('excerpt'),
-            'body' => $request->input('body'),
-            'created_at' => now(),
-            'updated_at' => now(),
-            'published_at' => now(),
-            'image' => $imageName,
-        ]);
-
-        //$post = $post->fresh();
-
-       // $createdPost = Post::with(['author', 'category'])->find($post->id);
-
-        // Return the post content as HTML
-       // $postHtml = view('post', ['post' => $createdPost])->render();
-
-        //return response()->json(['message' => 'Post created successfully', 'post' => $postHtml], 201);
-        // } catch (\Exception $e) {
-       //     return response()->json(['error' => 'Error creating post', 'message' => $e->getMessage()], 500);
-        //
-        return response()->json(['success' => 'Post created successfully']);
 
     }
 
